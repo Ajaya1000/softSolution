@@ -123,75 +123,31 @@ export default class UpdateProfile extends Component {
       obj.state = this.state.uState
     if (this.state.uCityChanged)
       obj.city = this.state.uCity
-    if (this.state.bank_nameChanged)
+    obj.bankDetails={}
+    // if (this.state.bank_nameChanged)
       obj.bankDetails.bank_name = this.state.bank_name
-    if (this.state.accHolderNameChanged)
+    // if (this.state.accHolderNameChanged)
       obj.bankDetails.accHolderName = this.state.accHolderName
-    if (this.state.accNumberChanged)
+    // if (this.state.accNumberChanged)
       obj.bankDetails.accNumber = this.state.accNumber
-    if (this.state.ifscCodeChanged)
+    // if (this.state.ifscCodeChanged)
       obj.bankDetails.ifscCode = this.state.ifscCode
-    axios.post('https://knekisan.com/api/v1/users/update',obj).then((res)=>{
-      console.log('')
-      Alert.alert("उपयोगकर्ता update सुस्पष्ट रूप से")
-      this.setState({
-        selected: "Farmer",
-        imageProfile: null,
-        imageAadhar: null,
-        imagePan: null,
-        fullName: "test",
-        username: "",
-        password: "",
-        mNumber: "",
-        land: "",
-        area: "sq",
-        comodity: null,
-        bank_name: '',
-        accNumber: "",
-        ifscCode: "",
-        accHolderName: "",
-        aadharNumber: "",
-        pan: "",
-        addressLine1: "",
-        addressLine2: "",
-        uState: "",
-        uCity: "",
-        check1: null,
-        check2: null,
-        check3: null,
-        textInput: [],
-        inputData: [],
-        bankBttn: false,
-        showAlert: false,
-        panChanged: false,
-        addressLine1Changed: false,
-        addressLine2Changed: false,
-        uStateChanged: false,
-        uCityChanged: false,
-        accHolderName: false,
-        bank_nameChanged: false,
-        accNumberChanged: false,
-        ifscCodeChanged: false,
-        accHolderNameChanged: false,
-        aadharNumberChanged: false,
-        selectedChanged: false,
-        mNumberChanged: false,
-        usernameChanged: false,
-      })
-      obj.bankDetails.bank_name = this.state.bank_name;
-      obj.bankDetails.accHolderName = this.state.accHolderName;
-      obj.bankDetails.accNumber = this.state.accNumber;
-      obj.bankDetails.ifscCode = this.state.ifscCode;
+    console.log('object is');
+    console.log(obj);
+    // obj = JSON.stringify(obj);
+    // console.log(obj);
+    axios.post('https://knekisan.com/api/v1/users/update',obj).then((res) => {
+      console.log('inside update');
+      console.log(res);
+       Alert.alert("उपयोगकर्ता update सुस्पष्ट रूप से");
       (async()=>{
         try {
-          let user_data= await AsyncStorage.getItem('userdata');
-          user_data= {...JSON.parse(user_data),...obj};
-          AsyncStorage.setItem("userdata", JSON.stringify(user_data))
+          await AsyncStorage.setItem("userdata", JSON.stringify(res.data.data))
         } catch (error) {
           console.log(error);
         }
       })();
-      // this.props.nav.navigate("Home");
+      //  this.props.nav.navigate("Home");
     }).catch (error=>{
       Alert.alert("Server Error, Please Try Again Later");
       console.log("error while trying update");
