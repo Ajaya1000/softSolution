@@ -66,7 +66,7 @@ export const Swiper2 = (props) => (
                 >
                     <Image style={styles.image} source={require("../assets/image3.jpg")} />
                 </TouchableOpacity>
-                <TouchableOpacity 
+                {/* <TouchableOpacity 
                     style={{flex:1}}
                     onPress={()=>props.navigation.navigate('ProductDescription') }
                     activeOpacity={1}
@@ -93,7 +93,7 @@ export const Swiper2 = (props) => (
                     activeOpacity={1}
                 >
                     <Image style={styles.image} source={require("../assets/image3.jpg")} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 {/* <TouchableOpacity 
                     style={{flex:1}}
                     onPress={()=>props.navigation.navigate('ProductDescription') }
