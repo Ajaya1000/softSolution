@@ -8,7 +8,14 @@ import { Header3 } from "../components/Header_components"
 const { width, height } = Dimensions.get('window')
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-
+import {
+  Container,
+  Header,
+  Content,
+  Icon,
+  Picker,
+  Form
+} from "native-base";
 let baseUrl = `https://knekisan.com/`
 
 // const items=[
@@ -96,7 +103,7 @@ export default class Offers extends React.Component {
     data: [],
     status: '',
     filtered_data: [],
-    button_clicked:'',
+    button_clicked:'All',
     ripple:false,
   }
   componentDidMount() {
@@ -225,13 +232,25 @@ export default class Offers extends React.Component {
       return '#7FFF0011'
   }
   render() {
+    const {button_clicked,data}=this.state;
     let show_detail;
-    if(this.state.filtered_data.length > 0 && this.state.button_clicked !==''){
+    let filtered_data;
+    if(button_clicked==='All')
+      filtered_data = data
+    else if (button_clicked === 'PaymentRecieved'){
+      filtered_data = data.filter(e => e.paymentRecievedFlag)
+    }
+    else if (button_clicked === 'QauntityRecieved') {
+      filtered_data = data.filter(e => e.quantityRecievedFlag)
+    }
+    else filtered_data= data.filter(e=>e.status===button_clicked);
+
+    if(filtered_data.length > 0){
       show_detail = (
         <FlatList
             keyExtractor={item => item.id}
             // data={this.state.data && this.state.filtered}
-            data={this.state.filtered_data}
+            data={filtered_data}
             renderItem={({ item }) =>
             // <View style={styles.cardHolder} >
             < TouchableNativeFeedback 
@@ -248,6 +267,7 @@ export default class Offers extends React.Component {
              background = {
                TouchableNativeFeedback.Ripple('#32CD3255', this.state.ripple)
              }
+             
              >
               <View style={styles.card}>
                 < View style = {
@@ -327,19 +347,55 @@ export default class Offers extends React.Component {
     }
     
     return (
-      <View style={{ flex: 1, backgroundColor: "#fff" }} >
+      <>
+      < View style = {
+        {
+          backgroundColor: "#fff",
+          flex:1
+        }
+      } >
         <Header3 navigation={this.props.navigation} />
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+        <Form>
+            <Picker
+              mode="dropdown"
+              iosIcon={<Icon name="arrow-down" />}
+              placeholder = "फ़िल्टर का चयन करें"
+              placeholderStyle={{ color: "#bfc6ea" }}
+              placeholderIconColor="#007aff"
+              // style={{ width: undefined }}
+              selectedValue = {
+                this.state.button_clicked
+              }
+              onValueChange = {
+                (value) =>{ this.setState({
+                  button_clicked:value
+                })
+               this.init();
+               }
+              }
+            >
+              <Picker.Item label="All" value="All" />
+              <Picker.Item label="Approved" value="Approved" />
+              <Picker.Item label="Pending" value="Pending" />
+              <Picker.Item label="Declined" value="Declined" />
+              <Picker.Item label="Payment Recieved" value="PaymentRecieved" />
+              <Picker.Item label="Qauntity Recieved" value="QauntityRecieved" />
+            </Picker>
+          </Form>
+        {/* <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
           <Button title="मंजूर की" color='green' onPress={this.showApproved} />
           <Button title='विचाराधीन' color='gold' onPress={this.showPending} />
           <Button title='इंकार कर दिया' color='red' onPress={this.showDeclined} />
           <Button title='तिथि के अनुसार' color='green' onPress={this.showApproved} />
-        </View>
-      <View style={{marginTop:20}}>
+        </View> */}
+
+      {/* <Button title='offer_details page' color='black' onPress={()=>this.props.navigation.navigate('OfferDetails',{name:"ajay"})} /> */}
+      <View style={{marginTop:20,paddingTop:10,paddingBottom:30,backgroundColor:'fff'}}>
         {show_detail}
       </View>
-      {/* <Button title='offer_details page' color='black' onPress={()=>this.props.navigation.navigate('OfferDetails',{name:"ajay"})} /> */}
       </View >
+      
+      </>
     );
   }
 }
