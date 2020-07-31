@@ -211,7 +211,19 @@ export default class Offers extends React.Component {
     paymentDue: '111', │quantityRecieved: '111', │rate: '111', └paymentRecieved: '1234'
     */
   }
-
+  giveColor=(status,paymentRecievedFlag,quantityRecievedFlag)=>{
+      if (status === 'Pending')
+        return '#fff'
+      if (status === 'Declined')
+        return '#FF495C11'
+      if(paymentRecievedFlag && quantityRecievedFlag)
+        return '#3DDC9711'
+      if(paymentRecievedFlag)
+        return '#800080'
+      if(quantityRecievedFlag)
+        return '#256EFF11'
+      return '#7FFF0011'
+  }
   render() {
     let show_detail;
     if(this.state.filtered_data.length > 0 && this.state.button_clicked !==''){
@@ -238,7 +250,14 @@ export default class Offers extends React.Component {
              }
              >
               <View style={styles.card}>
-                { (item.product && item.product.name) && (<Text style={styles.subtitle}>उत्पाद: {item.product.name}</Text>)}
+                < View style = {
+                  {
+                    backgroundColor: this.giveColor(item.status, item.paymentRecievedFlag, this.quantityRecievedFlag),
+                    borderRadius: 10,
+                    padding:10
+                  }
+                } >
+                  { (item.product && item.product.name) && (<Text style={styles.subtitle}>उत्पाद: {item.product.name}</Text>)}
                 <Text style={styles.subtitle}>बोरी: {item.bori}</Text>
                 <Text style={styles.subtitle}>चालक : {item.driver}</Text>
                 <Text style={styles.subtitle}>गाडी नंबर: {item.vehicleNo}</Text>
@@ -259,6 +278,7 @@ export default class Offers extends React.Component {
                     this.renderStatus(item.status)
                   }
                 </Text>
+                </View>
               </View>
             </TouchableNativeFeedback>
             // </View>
@@ -351,7 +371,7 @@ const styles = StyleSheet.create({
     marginBottom:20,
     alignSelf: 'center',
     marginTop: 10,
-    padding: 10,
+    padding: 0,
     backgroundColor: 'white',
     borderRadius: 10,
     // elevation: 6,
