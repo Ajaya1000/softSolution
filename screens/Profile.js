@@ -1,41 +1,63 @@
-import React, { Component } from 'react';
-import { Image, View, Dimensions } from 'react-native';
-import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right,List,ListItem } from 'native-base';
-import { EvilIcons,Entypo,SimpleLineIcons,MaterialCommunityIcons,MaterialIcons,AntDesign } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { AsyncStorage } from 'react-native';
-import { Modal } from 'react-native-paper';
-const { width, height } = Dimensions.get('window')
+import React, { Component } from "react";
+import { Image, View, Dimensions } from "react-native";
+import {
+  Container,
+  Header,
+  Content,
+  Card,
+  CardItem,
+  Thumbnail,
+  Text,
+  Button,
+  Icon,
+  Left,
+  Body,
+  Right,
+  List,
+  ListItem,
+} from "native-base";
+import {
+  EvilIcons,
+  Entypo,
+  SimpleLineIcons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+  AntDesign,
+} from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { AsyncStorage } from "react-native";
+import { Modal } from "react-native-paper";
+import { Lightbox } from "react-modal-image";
+const { width, height } = Dimensions.get("window");
 
 export default class CardImageExample extends Component {
   constructor(props) {
     super(props);
-     
-    this.state = {
-        username: "",
-        imageProfile: "",
-        ucity:"",
-        uState:"",
-        aadharModal:false,
-        panModal:false,
-        imageAadhar:null,
-        imagePan:null
 
+    this.state = {
+      username: "",
+      imageProfile: "",
+      ucity: "",
+      uState: "",
+      aadharModal: false,
+      panModal: false,
+      imageAadhar: null,
+      imagePan: null,
     };
-     }
-componentWillMount(){
-    this._checklogin()
-}
+  }
+  componentWillMount() {
+    this._checklogin();
+  }
   componentDidMount() {
-    console.log('component did mount called ajay');
+    console.log("component did mount called ajay");
     (async () => {
-      console.log('profile fetching')
+      console.log("profile fetching");
       try {
-        console.log('inside try block')
-        let user_data = await AsyncStorage.getItem('userdata');
+        console.log("inside try block");
+        let user_data = await AsyncStorage.getItem("userdata");
         console.log(typeof user_data);
         user_data = JSON.parse(user_data);
-        console.log('user data is')
+        console.log("user data is");
         console.log(user_data);
         this.setState({
           id: user_data._id,
@@ -68,10 +90,9 @@ componentWillMount(){
           bankBttn: false,
           showAlert: false,
           selected: user_data.userType,
-          firstName: user_data.firstName || '',
-          lastName: user_data.lastName || ''
-
-        })
+          firstName: user_data.firstName || "",
+          lastName: user_data.lastName || "",
+        });
       } catch (error) {
         Alert.alert("Profile details couldn't be fetched");
         console.log(error);
@@ -79,22 +100,18 @@ componentWillMount(){
     })();
   }
 
-
-
-_checklogin = async () =>{
-    let imageProfile = await AsyncStorage.getItem("imageProfile")
-    console.log('profile_pic:\n' + JSON.stringify(imageProfile));
+  _checklogin = async () => {
+    let imageProfile = await AsyncStorage.getItem("imageProfile");
+    console.log("profile_pic:\n" + JSON.stringify(imageProfile));
     this.setState({
-      imageProfile
-    })
-}
-
-
+      imageProfile,
+    });
+  };
 
   render() {
     return (
-    <Container>
-     {/* <View>
+      <Container>
+        {/* <View>
          <Card>
          <CardItem>
             <Body style={{alignItems:"center"}}>
@@ -106,31 +123,53 @@ _checklogin = async () =>{
          </Card>
      </View> */}
 
-      <View style={{height:290, width:width, backgroundColor:'#fff', elevation:5}}>
-        
-        <View style={{marginTop:10, marginRight:5, alignItems:'flex-end'}}>
-          <TouchableOpacity style={{ height:30, width:30, alignItems:'flex-end'}}
-                            onPress={()=>this.props.navigation.navigate("UpdateProfile")}
+        <View
+          style={{
+            height: 290,
+            width: width,
+            backgroundColor: "#fff",
+            elevation: 5,
+          }}
+        >
+          <View
+            style={{ marginTop: 10, marginRight: 5, alignItems: "flex-end" }}
           >
-            <MaterialIcons name="edit" size={24} color="#76BA1B" />
-          </TouchableOpacity>
-        </View>
-        
-        <View style={{alignItems:'center', justifyContent:'center'}}>
-          <View style={{height:200, width:200, borderRadius:100, elevation:10}}>
-            <Image style={{height:200, width:200, borderRadius:100, resizeMode:'cover'}} 
-                   source = {
-                     {
-                       uri: `${this.state.imageProfile}`
-                     }
-                   }
-                   />
+            <TouchableOpacity
+              style={{ height: 30, width: 30, alignItems: "flex-end" }}
+              onPress={() => this.props.navigation.navigate("UpdateProfile")}
+            >
+              <MaterialIcons name="edit" size={24} color="#76BA1B" />
+            </TouchableOpacity>
           </View>
-          <View style={{marginTop:10}}>
-            <Text style={{fontSize:22, fontWeight:'bold'}}>{this.state.username}</Text>
+
+          <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <View
+              style={{
+                height: 200,
+                width: 200,
+                borderRadius: 100,
+                elevation: 10,
+              }}
+            >
+              <Image
+                style={{
+                  height: 200,
+                  width: 200,
+                  borderRadius: 100,
+                  resizeMode: "cover",
+                }}
+                source={{
+                  uri: `${this.state.imageProfile}`,
+                }}
+              />
+            </View>
+            <View style={{ marginTop: 10 }}>
+              <Text style={{ fontSize: 22, fontWeight: "bold" }}>
+                {this.state.username}
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
         {/* <Content style={{maxHeight:200}}>
           <Card >
             <CardItem style={{backgroundColor:"#76BA1B"}}>
@@ -168,8 +207,8 @@ _checklogin = async () =>{
           </Card>
           
         </Content> */}
-     
-        <Content style={{marginTop:20}}>
+
+        <Content style={{ marginTop: 20 }}>
           <List>
             {/* <ListItem>
               <Entypo name="back-in-time" size={24} color="black" />
@@ -191,7 +230,7 @@ _checklogin = async () =>{
 
               <TouchableOpacity><Text> &nbsp;Payment Notifications</Text></TouchableOpacity>
             </ListItem> */}
-            
+
             {/* <ListItem>
               <SimpleLineIcons name="bubbles" size={24} color="black" />
               <TouchableOpacity><Text> &nbsp;My Ratings & Reviews</Text></TouchableOpacity>
@@ -221,83 +260,50 @@ _checklogin = async () =>{
               <Text> &nbsp;state: {this.state.uState} </Text>
             </ListItem>
             <ListItem>
-              <TouchableOpacity onPress={()=>{this.setState({aadharModal:true})}} style={{flexDirection:"row",marginTop:25}}>
-                   <AntDesign name="idcard" size={26} color="black" />
-                <Text>
-                &nbsp;&nbsp;:अपना आधार अपलोड dekhe
-                </Text>
-                <Text>
-                &nbsp;&nbsp;<Entypo name={this.state.check2} size={18} color="green"/>
-                </Text>
-               
-            </TouchableOpacity>
-            <Modal animationType="slide"
-              transparent={true}
-              visible = {
-                this.state.aadharModal
-              }
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({ aadharModal: true });
+                }}
+                style={{ flexDirection: "row", marginTop: 25 }}
               >
-                <View style={{width:600,height:600}}>
-                  < Image source = {
-                    {
-                      uri: `${this.state.imageAadhar}`
-                    }
-                  }
-                  />
-                   <Text>Caption</Text>
-                   <TouchableOpacity onPress={()=>this.setState({aadharModal:false})} ><Text>Close</Text></TouchableOpacity>
-                </View>
-            </Modal>
+                <AntDesign name="idcard" size={26} color="black" />
+                <Text>&nbsp;&nbsp;:अपना आधार अपलोड dekhe</Text>
+                <Text>
+                  &nbsp;&nbsp;
+                  <Entypo name={this.state.check2} size={18} color="green" />
+                </Text>
+              </TouchableOpacity>
             </ListItem>
             <ListItem>
-              <TouchableOpacity onPress={()=>{this.setState({panModal:true})}} style={{flexDirection:"row",marginTop:25}}>
-               <AntDesign name="idcard" size={26} color="black" />
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({ panModal: true });
+                }}
+                style={{ flexDirection: "row", marginTop: 25 }}
+              >
+                <AntDesign name="idcard" size={26} color="black" />
+                <Text>&nbsp;&nbsp;:अपना pan अपलोड dekhe</Text>
                 <Text>
-                &nbsp;&nbsp;:अपना pan अपलोड dekhe
+                  &nbsp;&nbsp;
+                  <Entypo name={this.state.check3} size={18} color="green" />
                 </Text>
-                <Text>
-                &nbsp;&nbsp;<Entypo name={this.state.check3} size={18} color="green"/>
-                </Text>
-            </TouchableOpacity>
-            <Modal animationType="slide"
-            transparent={true}
-            visible = {
-              this.state.panModal
-            }
-            onRequestClose={() => {
-              this.setState({
-                panModal: false
-              })
-            }} >
-                < View style = {
-                  {
-                    width: 600,
-                    height: 600
-                  }
-                } >
-                  < Image source = {
-                    {
-                      uri: `${this.state.imagePan}`
-                    }
-                  }
-                  />
-                  <TouchableOpacity onPress={()=>this.setState({panModal:false})} ><Text>Close</Text></TouchableOpacity>
-                </View>
-            </Modal>
+              </TouchableOpacity>
             </ListItem>
             <ListItem>
               <AntDesign name="logout" size={24} color="black" />
               <TouchableOpacity
-              onPress={()=>{
-                AsyncStorage.removeItem('username').then(()=>this.props.navigation.replace("Home"))
-              }}
-              ><Text> &nbsp;लॉग आउट</Text></TouchableOpacity>
-            </ListItem> 
-            
+                onPress={() => {
+                  AsyncStorage.removeItem("username").then(() =>
+                    this.props.navigation.replace("Home")
+                  );
+                }}
+              >
+                <Text> &nbsp;लॉग आउट</Text>
+              </TouchableOpacity>
+            </ListItem>
           </List>
         </Content>
       </Container>
- 
- );
+    );
   }
 }

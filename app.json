@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "softsolution",
+    "name": "KNEKISAN",
     "slug": "softsolution",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,6 +21,10 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "android": {
+      "package": "softsolution.com",
+      "versionCode": 1
     }
   }
 }

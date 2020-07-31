@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, ScrollView, Dimensions, Image, View, Button, AsyncStorage } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, TouchableHighlight, TouchableOpacity, TouchableNativeFeedback } from 'react-native-gesture-handler';
 import { ActivityIndicator } from 'react-native-paper';
 import { Swiper1, Swiper2, Swiper3 } from "../components/Swiper";
 import { Card1, Card2, Card3, Card4, Card5, LabelCard, OffersLargeCards, ScrollHorizontalCardView } from "../components/Card"
@@ -90,21 +90,25 @@ const items = [
 // let declined = items.filter(e => e.Status === "Declined");
 
 export default class Offers extends React.Component {
-
   state = {
     loading: true,
     refreshing: false,
     data: [],
     status: '',
     filtered_data: [],
-    button_clicked:''
+    button_clicked:'',
+    ripple:false,
   }
-
-  async componentDidMount() {
+  componentDidMount() {
+    console.log('offer props are');
+    console.log(this.props);
+    this.init();
+  }
+  async init() {
     let userId = await AsyncStorage.getItem('user')
     console.log(userId);
     await this.makeRemoteRequest(userId);
-    // console.log(this.state.data);
+    console.log(this.state.data);
   }
 
   makeRemoteRequest = async (userId) => {
@@ -116,7 +120,7 @@ export default class Offers extends React.Component {
         .then(res => res.json())
         .then(res => {
           this.setState({
-            data: [...this.state.data, ...res.data],
+            data: [...res.data],
             refreshing: false
           })
           // console.log(this.state.data);
@@ -165,10 +169,12 @@ export default class Offers extends React.Component {
     } else if (status == 'Declined') {
       return <Text style={{ color: 'red' }}>इंकार कर दिया</Text>
       // return <Entypo name="circle-with-cross" size={24} color="red" />
-    }
+    } 
+
   }
 
-  showApproved = () => {
+  showApproved = async () => {
+    await this.init();
     let approved = this.state.data.filter(e => e.status === "Approved");
     // console.log('Approved')
     // console.log(approved)
@@ -179,7 +185,8 @@ export default class Offers extends React.Component {
     // console.log(this.state.button_clicked)
   }
 
-  showPending = () => {
+  showPending = async () => {
+    await this.init();
     let pending = this.state.data.filter(e => e.status === "Pending");
     // console.log("Pending")
     // console.log(pending)
@@ -190,7 +197,8 @@ export default class Offers extends React.Component {
     // console.log(this.state.button_clicked)
   }
 
-  showDeclined = () => {
+  showDeclined = async() => {
+    await this.init();
     let declined = this.state.data.filter(e => e.status === "Declined");
     // console.log("Declined")
     // console.log(declined)
@@ -199,6 +207,9 @@ export default class Offers extends React.Component {
       button_clicked:"Declined"
     })
     // console.log(this.state.button_clicked)
+    /*
+    paymentDue: '111', │quantityRecieved: '111', │rate: '111', └paymentRecieved: '1234'
+    */
   }
 
   render() {
@@ -210,17 +221,47 @@ export default class Offers extends React.Component {
             // data={this.state.data && this.state.filtered}
             data={this.state.filtered_data}
             renderItem={({ item }) =>
+            // <View style={styles.cardHolder} >
+            < TouchableNativeFeedback 
+            onPress={()=>{
+                this.setState({ripple:true}) ;
+                this.props.navigation.navigate('OfferDetails', {
+                  item: item
+                })
+              //   setTimeout(() => {
+              //   this.props.navigation.navigate('OfferDetails',{item:item})
+              // }, 50);
+            }
+            }
+             background = {
+               TouchableNativeFeedback.Ripple('#32CD3255', this.state.ripple)
+             }
+             >
               <View style={styles.card}>
+                { (item.product && item.product.name) && (<Text style={styles.subtitle}>उत्पाद: {item.product.name}</Text>)}
                 <Text style={styles.subtitle}>बोरी: {item.bori}</Text>
                 <Text style={styles.subtitle}>चालक : {item.driver}</Text>
                 <Text style={styles.subtitle}>गाडी नंबर: {item.vehicleNo}</Text>
                 <Text style={styles.subtitle}>वजन :  {item.weight}</Text>
-                <Text style={[styles.subtitle, { position: 'absolute', left: width / 1.45, bottom: 20, fontSize: height / 40 }]}>
+
+                {/* {(item.paymentDue)&&(<Text style={styles.subtitle}> भुगतान राशि :  {item.paymentDue}</Text>)}
+                {
+                  (item.quantityRecieved ) && (<Text style={styles.subtitle}>प्राप्त मात्रा :  {item.quantityRecieved}</Text>)
+                }
+                {
+                  (item.rate)&& (<Text style={styles.subtitle}> दर :  {item.rate}</Text>)
+                }
+                {
+                  (item.paymentRecieved)&& (<Text style={styles.subtitle}> भुगतान प्राप्त :  {item.paymentRecieved}</Text>)
+                } */}
+                <Text style={[styles.subtitle, { position: 'absolute', right: 20, bottom: 20, fontSize: height / 40 }]}>
                   {
                     this.renderStatus(item.status)
                   }
                 </Text>
               </View>
+            </TouchableNativeFeedback>
+            // </View>
             }
             //refreshing={this.state.refreshing}
             ListFooterComponent={this.renderFooter}
@@ -266,7 +307,7 @@ export default class Offers extends React.Component {
     }
     
     return (
-      <View style={{ flex: 1, backgroundColor: "#D3D3D3" }} >
+      <View style={{ flex: 1, backgroundColor: "#fff" }} >
         <Header3 navigation={this.props.navigation} />
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
           <Button title="मंजूर की" color='green' onPress={this.showApproved} />
@@ -274,26 +315,61 @@ export default class Offers extends React.Component {
           <Button title='इंकार कर दिया' color='red' onPress={this.showDeclined} />
           <Button title='तिथि के अनुसार' color='green' onPress={this.showApproved} />
         </View>
-      {show_detail}
+      <View style={{marginTop:20}}>
+        {show_detail}
+      </View>
+      {/* <Button title='offer_details page' color='black' onPress={()=>this.props.navigation.navigate('OfferDetails',{name:"ajay"})} /> */}
       </View >
     );
   }
 }
 
 const styles = StyleSheet.create({
+  cardHolder:{
+    // // width: '91%',
+    // //  height: height / 5,
+    // paddingBottom:1,
+    // paddingTop:1,
+    // paddingRight: 1,
+    // paddingLeft:1,
+      // paddingBottom
+    shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+
+      elevation: 5,
+  },
   card: {
-    height: height / 5,
-    width: width / 1.1,
+    // height: height / 5,
+    // width: width / 1.1,
+    width:'90%',
+    marginTop:20,
+    marginBottom:20,
     alignSelf: 'center',
     marginTop: 10,
     padding: 10,
     backgroundColor: 'white',
     borderRadius: 10,
-    elevation: 6
+    // elevation: 6,
+        shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+
+      elevation: 5,
+
   },
   subtitle: {
     color: '#81C784',
-    fontSize: height / 35
+    fontSize: height / 35,
+    marginTop:2
   }
 
 })

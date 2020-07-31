@@ -8,8 +8,6 @@ import {
 } from 'react-native';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import Collapsible from 'react-native-collapsible';
-
-
 export default class Dropdown extends Component {
   state = {
       collapsed: true,

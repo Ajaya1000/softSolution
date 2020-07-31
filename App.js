@@ -19,6 +19,7 @@ import Product_Description from "./screens/product_description";
 import Product_Description_new from "./screens/product_description_new";
 import Constant from 'expo-constants';
 import { AsyncStorage } from 'react-native';
+import OfferDetails from './screens/offer_details';
 
 
 const Stack = createStackNavigator();
@@ -107,10 +108,32 @@ const HomeStack = () => {
         headerTitleAlign:"center",
         headerTintColor:"#fff"
        }} />
+       {/* <Stack.Screen name="OfferDetails" component={OfferDetails} options={{ 
+        headerTitle: "पूछताछ विवरण",
+        headerStyle:{
+          backgroundColor:"#76BA1B",
+        },
+        headerTitleAlign:"center",
+        headerTintColor:"#fff"
+       }} /> */}
     </Stack.Navigator>
   );
 }
-
+const OfferStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Offers' component={Offers} options={{headerShown:false}} />
+      <Stack.Screen name='OfferDetails' component={OfferDetails} options={{ 
+        headerTitle: "पूछताछ विवरण",
+        headerStyle:{
+          backgroundColor:"#76BA1B",
+        },
+        headerTitleAlign:"center",
+        headerTintColor:"#fff"
+       }} />
+    </Stack.Navigator>
+  );
+}
 const Tab = createBottomTabNavigator();
 
 const tabBarStyle = {
@@ -141,7 +164,7 @@ const HomeTab = () => {
                       ),
                     }}
           />
-          <Tab.Screen name="जांच" component={Offers} 
+          <Tab.Screen name="जांच" component={OfferStack} 
                     options={{
                       tabBarIcon: () => (
                         <Foundation name="info" size={28} color="black" />
@@ -223,6 +246,7 @@ export default class App extends React.Component {
           <Drawer.Screen name="LoginSignup" component={LoginSignup} />
           <Drawer.Screen name="Category" component={Category} />
           <Drawer.Screen name="Offers" component={Offers} />
+          {/* <Drawer.Screen name="OfferDetails" component={OfferDetails} /> */}
           {/* <Drawer.Screen name="Basket" component={Basket} /> */}
         </Drawer.Navigator>
 
