@@ -362,7 +362,11 @@ export default class Offers extends React.Component {
               placeholder = "फ़िल्टर का चयन करें"
               placeholderStyle={{ color: "#bfc6ea" }}
               placeholderIconColor="#007aff"
-              // style={{ width: undefined }}
+              style = {
+                {
+                  backgroundColor: '#8338EC'
+                }
+              }
               selectedValue = {
                 this.state.button_clicked
               }
@@ -374,12 +378,12 @@ export default class Offers extends React.Component {
                }
               }
             >
-              <Picker.Item label="All" value="All" />
-              <Picker.Item label="Approved" value="Approved" />
-              <Picker.Item label="Pending" value="Pending" />
-              <Picker.Item label="Declined" value="Declined" />
-              <Picker.Item label="Payment Recieved" value="PaymentRecieved" />
-              <Picker.Item label="Qauntity Recieved" value="QauntityRecieved" />
+              <Picker.Item label="सब" value="All" />
+              <Picker.Item label="अनुमोदित" value="Approved" />
+              <Picker.Item label="विचाराधीन" value="Pending" />
+              < Picker.Item label = "अस्वीकृत" value = "Declined" / >
+              <Picker.Item label="भुगतान प्राप्त" value="PaymentRecieved" />
+              <Picker.Item label="प्राप्त मात्रा" value="QauntityRecieved" />
             </Picker>
           </Form>
         {/* <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
