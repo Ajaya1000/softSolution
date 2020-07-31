@@ -20,7 +20,7 @@ import Product_Description_new from "./screens/product_description_new";
 import Constant from 'expo-constants';
 import { AsyncStorage } from 'react-native';
 import OfferDetails from './screens/offer_details';
-import timerStart from './notificationManager/timer';
+// import timerStart from './notificationManager/timer';
 
 
 const Stack = createStackNavigator();
@@ -37,7 +37,7 @@ class LoginCheck extends React.Component{
    }
   componentWillMount(){
     this._checkLocalStorage();
-    timerStart();
+    // timerStart();
   }
   _checkLocalStorage=async()=>{
     let username= await AsyncStorage.getItem('username')

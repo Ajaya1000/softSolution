@@ -362,11 +362,7 @@ export default class Offers extends React.Component {
               placeholder = "फ़िल्टर का चयन करें"
               placeholderStyle={{ color: "#bfc6ea" }}
               placeholderIconColor="#007aff"
-              style = {
-                {
-                  backgroundColor: '#8338EC'
-                }
-              }
+              
               selectedValue = {
                 this.state.button_clicked
               }
@@ -394,9 +390,9 @@ export default class Offers extends React.Component {
         </View> */}
 
       {/* <Button title='offer_details page' color='black' onPress={()=>this.props.navigation.navigate('OfferDetails',{name:"ajay"})} /> */}
-      <View style={{marginTop:20,paddingTop:10,paddingBottom:30,backgroundColor:'fff'}}>
+      <ScrollView style={{marginTop:20,paddingTop:10,paddingBottom:30,backgroundColor:'fff'}}>
         {show_detail}
-      </View>
+      </ScrollView>
       </View >
       
       </>
