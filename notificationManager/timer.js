@@ -41,34 +41,76 @@ export var notify = async () => {
   }
   console.log('inside notify')
   console.log(token);
-      sendPushNotification(
-        token,
-        "inside notify",
-        "this is a long paragraph under notify", {}
-      );
+      // sendPushNotification(
+      //   token,
+      //   "inside notify",
+      //   "this is a long paragraph under notify", {}
+      // );
   let newData = await makeRemoteRequest(userId);
   console.log(newData)
   console.log("user id is ", userId);
   if(userId){}
   else{
-    sendPushNotification(
-      token,
-      "error",
-      "UserId not found", {}
-    );
+    // sendPushNotification(
+    //   token,
+    //   "error",
+    //   "UserId not found", {}
+    // );
+    console.log('user id not found');
   }
   try{
-    if(newData){
+    // let obj={}
+    if(newData && newData.length){
       data = [...newData];
+      // for(let i=0;i<newData.length;i++){
+      //   let id = newData[i]._id
+      //   if(id){
+      //     if(obj.id){
+      //       obj.id.push({
+      //         status: newData[i].status,
+      //         paymentRecievedFlag: newData[i].paymentRecievedFlag,
+      //         quantityRecievedFlag: newData[i].quantityRecievedFlag
+      //       })
+      //     }
+      //     else{
+      //       obj.id = [{
+      //         status: newData[i].status,
+      //         paymentRecievedFlag: newData[i].paymentRecievedFlag,
+      //         quantityRecievedFlag: newData[i].quantityRecievedFlag
+      //       }]
+      //     }
+      //   }
+      // }
     }
-    if (newData && oldData && (newData.length === oldData.length)) {
-      
-      for (let i = 0; i < oldData.length; i++) {
-        if (newData[i] && oldData[i]) {
+    // if (oldData && oldData.length) {
+    //   for (let i = 0; i < oldData.length; i++) {
+    //     let id = oldData[i]._id
+    //     if (id) {
+    //       if (obj.id) {
+    //         obj.id.push({
+    //           status: oldData[i].status,
+    //           paymentRecievedFlag: oldData[i].paymentRecievedFlag,
+    //           quantityRecievedFlag: oldData[i].quantityRecievedFlag
+    //         })
+    //       }
+    //       else{
+    //         obj.id = [{
+    //           status: oldData[i].status,
+    //           paymentRecievedFlag: oldData[i].paymentRecievedFlag,
+    //           quantityRecievedFlag: oldData[i].quantityRecievedFlag
+    //         }]
+    //       }
+    //     }
+    //   }
+    // }
+    // && (newData.length === oldData.length)
+    // console.log('obj is',obj)
+    if (newData && oldData && oldData.length && newData.length) {
+      for (let i = 0; i < oldData.length && i < newData.length;i++) {
           if (
             newData[i].status &&
             oldData[i].status &&
-            newData[i].status !== oldData[i].status
+            (newData[i].status !== oldData[i].status)
           ) {
             let s = (newData[i].status === 'Approved' ? "अभिनंदन,जांच सफलतापूर्वक स्वीकृत" : "क्षमा करें, जांच अनुमोदन को अस्वीकार कर दिया गया है")
             sendPushNotification(token, newData[i].status, s, {});
@@ -76,37 +118,27 @@ export var notify = async () => {
           if (
             newData[i].paymentRecievedFlag &&
             oldData[i].paymentRecievedFlag &&
-            newData[i].paymentRecievedFlag !== oldData[i].paymentRecievedFlag
+            (newData[i].paymentRecievedFlag !== oldData[i].paymentRecievedFlag)
           ) {
             sendPushNotification(token, "भुगतान प्राप्त", "अभिनंदन,भुगतान सफलतापूर्वक प्राप्त किया गया", {});
           }
           if (
             newData[i].quantityRecievedFlag &&
             oldData[i].quantityRecievedFlag &&
-            newData[i].quantityRecievedFlag !== oldData[i].quantityRecievedFlag
+            (newData[i].quantityRecievedFlag !== oldData[i].quantityRecievedFlag)
           ) {
             sendPushNotification(token, "प्राप्त मात्रा", "अभिनंदन,मात्रा सफलतापूर्वक प्राप्त की गई", {});
           }
-        }
+        
       }
     }
-    else{
-      console.log('new Data is',newData);
-      if(newData) console.log('new data length is ',newData.length);
-      console.log('oldData is',oldData);
-      if (oldData) console.log('Old data length is ',oldData.length);
-      sendPushNotification(
-        token,
-        "error",
-        "error fetching data", {}
-      );
-    }
   } catch(error){
-    sendPushNotification(
-      token,
-      "error",
-      "error inside if else", {}
-    );
+    // sendPushNotification(
+    //   token,
+    //   "error",
+    //   "error fetching data", {}
+    // );
+    console.log('error while fetching data',error)
   }
 };
 
@@ -124,12 +156,12 @@ const timerStart = async () => {
   console.log("data fetched",data);
   let token=await AsyncStorage.getItem("token");
   console.log(token)
-  sendPushNotification(
-    token,
-    "Timer start called",
-    "Timer start CAlled",
-    {}
-  );
+  // sendPushNotification(
+  //   token,
+  //   "Timer start called",
+  //   "Timer start CAlled",
+  //   {}
+  // );
   try {
     const NOTIFICATION = "NOTIFICATION";
     console.log('inside try block')
