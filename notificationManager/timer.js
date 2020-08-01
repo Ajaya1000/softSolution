@@ -61,6 +61,8 @@ var intervalId;
   try{
     console.log(BackgroundTimer);
     console.log(BackgroundTimer.setTimeout);
+    // BackgroundTimer.start();
+    console.log('background timer start called');
     intervalId=BackgroundTimer.setInterval(() => {
       notify(token);
       console.log('tick');
