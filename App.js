@@ -28,25 +28,61 @@ import Product_Description_new from "./screens/product_description_new";
 import Constant from "expo-constants";
 import { AsyncStorage } from "react-native";
 import OfferDetails from "./screens/offer_details";
-import timerStart from "./notificationManager/timer";
+import timerStart,{notify} from "./notificationManager/timer";
+import * as TaskManager from "expo-task-manager";
+import { registerForPushNotificationsAsync } from "./notificationManager";
+import * as BackgroundFetch from "expo-background-fetch";
+const NOTIFICATION = "NOTIFICATION";
 
+TaskManager.defineTask(NOTIFICATION, async () => {
+  console.log('inside manager')
+  try {
+    // console.log("token recieved");
+    notify();
+    // console.log('task manager')
+    // sendPushNotification(
+    //   token,
+    //   "inside task manager",
+    //   "this is a long paragraph under task manager", {}
+    // );
+    return BackgroundFetch.Result.NewData;
+
+  } catch (error) {
+    return BackgroundFetch.Result.Failed;
+  }
+});
 const Stack = createStackNavigator();
-
 class LoginCheck extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       username: null,
+      token: null
     };
   }
   componentWillMount() {
     console.log("App mount");
     this._checkLocalStorage();
+    this.initializeToken();
+  }
+  initializeToken=async ()=>{
+    // let token = await AsyncStorage.getItem("token");
+    console.log('Token initialization called');
+    let token;
+    try {
+      token = await registerForPushNotificationsAsync();
+      await AsyncStorage.setItem("token", token)
+    } catch (error) {
+      console.log("error while initializing token", error);
+    }
+
     timerStart();
   }
   _checkLocalStorage = async () => {
     let username = await AsyncStorage.getItem("username");
+    
+    
     this.setState({ username });
   };
 
