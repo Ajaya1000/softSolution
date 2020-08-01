@@ -58,8 +58,11 @@ export var notify = async () => {
     );
   }
   try{
-    if (newData && oldData && (newData.length === oldData.length)) {
+    if(newData){
       data = [...newData];
+    }
+    if (newData && oldData && (newData.length === oldData.length)) {
+      
       for (let i = 0; i < oldData.length; i++) {
         if (newData[i] && oldData[i]) {
           if (
@@ -116,7 +119,8 @@ var intervalId;
 
 const timerStart = async () => {
   console.log("timer started");
-  data = await makeRemoteRequest();
+  let userId = await AsyncStorage.getItem("user");
+  data = await makeRemoteRequest(userId);
   console.log("data fetched",data);
   let token=await AsyncStorage.getItem("token");
   console.log(token)
