@@ -41,7 +41,7 @@ class LoginCheck extends React.Component {
     };
   }
   componentWillMount() {
-    console.log('App mount');
+    console.log("App mount");
     this._checkLocalStorage();
     timerStart();
   }

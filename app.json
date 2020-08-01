@@ -17,7 +17,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "KNEKISAN"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -26,6 +27,7 @@
       "package": "softsolution.com",
       "versionCode": 1,
       "useNextNotificationsApi": true
-    }
+    },
+    "entryPoint": "node_modules/expo/AppEntry.js"
   }
 }
