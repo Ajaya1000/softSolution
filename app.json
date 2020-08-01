@@ -24,7 +24,8 @@
     },
     "android": {
       "package": "softsolution.com",
-      "versionCode": 1
+      "versionCode": 1,
+      "useNextNotificationsApi": true
     }
   }
 }
