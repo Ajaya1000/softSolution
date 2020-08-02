@@ -520,7 +520,7 @@ export default class Product_Description extends React.Component {
                                                                 this.state.remarks ? "green" : "gray"
                                                     }}
                                                     success>
-                                                    <Text style={{ color: "#fff" }}>जांच भेजें</Text>
+                                                    <Text style={{ color: "#fff" }}>उत्पाद भेजें</Text>
                                                 </Button>
                                             </Form>
                                         </View>

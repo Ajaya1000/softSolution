@@ -1,21 +1,21 @@
 {
   "expo": {
-    "name": "KNEKISAN",
+    "name": "KNEKISANNOTIFIER",
     "slug": "softsolution",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "privacy": "public",
+    "platforms": ["android"],
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splashscreen.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "KNEKISAN"
@@ -26,8 +26,11 @@
     "android": {
       "package": "softsolution.com",
       "versionCode": 1,
-      "useNextNotificationsApi": true
+      "useNextNotificationsApi": true,
+      "googleServicesFile": "./google-services.json"
     },
-    "entryPoint": "node_modules/expo/AppEntry.js"
+    "entryPoint": "node_modules/expo/AppEntry.js",
+    "description": "",
+    "githubUrl": "https://github.com/Ajaya1000/softSolution.git"
   }
 }

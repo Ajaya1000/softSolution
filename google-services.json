@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "255665388583",
+    "firebase_url": "https://knekisan-79ca0.firebaseio.com",
+    "project_id": "knekisan-79ca0",
+    "storage_bucket": "knekisan-79ca0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255665388583:android:54e78d3edf5b1fab332202",
+        "android_client_info": {
+          "package_name": "com.softsolution"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "255665388583-auo3mf09jc6ourcgvfnqihta8ton6kcq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_dWbnVTo-3FScI6FEoJy3ck5PdTtL3IQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "255665388583-auo3mf09jc6ourcgvfnqihta8ton6kcq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255665388583:android:76ce32b81514e5d8332202",
+        "android_client_info": {
+          "package_name": "softsolution.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "255665388583-auo3mf09jc6ourcgvfnqihta8ton6kcq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_dWbnVTo-3FScI6FEoJy3ck5PdTtL3IQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "255665388583-auo3mf09jc6ourcgvfnqihta8ton6kcq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

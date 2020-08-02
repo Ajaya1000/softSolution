@@ -37,17 +37,12 @@ const NOTIFICATION = "NOTIFICATION";
 TaskManager.defineTask(NOTIFICATION, async () => {
   console.log('inside manager')
   try {
-    // console.log("token recieved");
-    notify();
-    // console.log('task manager')
-    // sendPushNotification(
-    //   token,
-    //   "inside task manager",
-    //   "this is a long paragraph under task manager", {}
-    // );
+    await notify();
+    console.log("The task is running");
     return BackgroundFetch.Result.NewData;
 
   } catch (error) {
+    console.log('error in running task');
     return BackgroundFetch.Result.Failed;
   }
 });

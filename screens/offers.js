@@ -219,16 +219,16 @@ export default class Offers extends React.Component {
     */
   }
   giveColor=(status,paymentRecievedFlag,quantityRecievedFlag)=>{
+      if (paymentRecievedFlag && quantityRecievedFlag)
+        return '#3DDC9711'
+      if (paymentRecievedFlag)
+        return '#800080'
+      if (quantityRecievedFlag)
+        return '#256EFF11'
       if (status === 'Pending')
         return '#fff'
       if (status === 'Declined')
         return '#FF495C11'
-      if(paymentRecievedFlag && quantityRecievedFlag)
-        return '#3DDC9711'
-      if(paymentRecievedFlag)
-        return '#800080'
-      if(quantityRecievedFlag)
-        return '#256EFF11'
       return '#7FFF0011'
   }
   render() {
@@ -248,7 +248,7 @@ export default class Offers extends React.Component {
     if(filtered_data.length > 0){
       show_detail = (
         <FlatList
-            keyExtractor={item => item.id}
+            keyExtractor={item => item._id}
             // data={this.state.data && this.state.filtered}
             data={filtered_data}
             renderItem={({ item }) =>

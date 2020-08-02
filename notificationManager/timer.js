@@ -17,138 +17,205 @@ var makeRemoteRequest = async (userId) => {
       newData=[...res.data];
     })
     .catch((error) => {console.log('error inside makeRemoteRequest ',error)});
-    console.log('inside makeRemoteRequest new Data is ',newData);
+    // console.log('inside makeRemoteRequest new Data is ',newData);
   return newData;
 };
 
 
 export var notify = async () => {
+  console.log("\n\n\n notify started\n\n\n")
+  //olddata
   let oldData;
   console.log('data is ',data)
   try {
-      if (data) {
+      if (data && data.length) {
         oldData = [...data];
       }
   } catch (error) {
     console.log('error in sperading',error);
   }
+
+  //userid and tooken
   let userId = await AsyncStorage.getItem("user");
+  let userData = await AsyncStorage.getItem("userdata");
+  userData = JSON.parse(userData);
+  let aadhar = userData.aadharNumber || 'Not Provided';
+  let pan = userData.pan || 'Not Provided';
+  // let rate = item.rate;
+  // let quantity = item.quantityRecieved;
+  // let paymentDue = item.paymentDue;
   let token = await AsyncStorage.getItem("token");
-  if(token){}
+  if(token){
+    console.log(token);
+  }
   else {
     token = await registerForPushNotificationsAsync();
     await AsyncStorage.setItem("token", token)
   }
-  console.log('inside notify')
-  console.log(token);
-      // sendPushNotification(
-      //   token,
-      //   "inside notify",
-      //   "this is a long paragraph under notify", {}
-      // );
-  let newData = await makeRemoteRequest(userId);
-  console.log(newData)
-  console.log("user id is ", userId);
-  if(userId){}
-  else{
-    // sendPushNotification(
-    //   token,
-    //   "error",
-    //   "UserId not found", {}
-    // );
+
+  //confirmation that evrything is working fine
+  // sendPushNotification(
+  //   token,
+  //   "inside notify",
+  //   "this is a long paragraph under notify", {}
+  // );
+
+  //new data
+  let newData;
+  if (userId) {
+      console.log("user id is ", userId);
+      newData = await makeRemoteRequest(userId);
+  } else {
+    sendPushNotification(
+      token,
+      "error",
+      "UserId not found", {}
+    );
     console.log('user id not found');
+    return;
   }
+  
+  //showing status
+  // if (newData && newData.length) {
+  //   console.log('new datas are');
+  //   newData.forEach(item=>console.log(item._id,item.status));
+  // }
+  // if (oldData && oldData.length) {
+  //   console.log('old datas are');
+  //   oldData.forEach(item => console.log(item._id, item.status));
+  // }
+
+  
+
+  //logic goes here
   try{
-    // let obj={}
+  // let obj={}
     if(newData && newData.length){
       data = [...newData];
-      // for(let i=0;i<newData.length;i++){
-      //   let id = newData[i]._id
-      //   if(id){
-      //     if(obj.id){
-      //       obj.id.push({
-      //         status: newData[i].status,
-      //         paymentRecievedFlag: newData[i].paymentRecievedFlag,
-      //         quantityRecievedFlag: newData[i].quantityRecievedFlag
-      //       })
-      //     }
-      //     else{
-      //       obj.id = [{
-      //         status: newData[i].status,
-      //         paymentRecievedFlag: newData[i].paymentRecievedFlag,
-      //         quantityRecievedFlag: newData[i].quantityRecievedFlag
-      //       }]
-      //     }
-      //   }
-      // }
-    }
-    // if (oldData && oldData.length) {
-    //   for (let i = 0; i < oldData.length; i++) {
-    //     let id = oldData[i]._id
-    //     if (id) {
-    //       if (obj.id) {
-    //         obj.id.push({
-    //           status: oldData[i].status,
-    //           paymentRecievedFlag: oldData[i].paymentRecievedFlag,
-    //           quantityRecievedFlag: oldData[i].quantityRecievedFlag
-    //         })
-    //       }
-    //       else{
-    //         obj.id = [{
-    //           status: oldData[i].status,
-    //           paymentRecievedFlag: oldData[i].paymentRecievedFlag,
-    //           quantityRecievedFlag: oldData[i].quantityRecievedFlag
-    //         }]
-    //       }
-    //     }
-    //   }
-    // }
-    // && (newData.length === oldData.length)
-    // console.log('obj is',obj)
-    if (newData && oldData && oldData.length && newData.length) {
-      for (let i = 0; i < oldData.length && i < newData.length;i++) {
-          if (
-            newData[i].status &&
-            oldData[i].status &&
-            (newData[i].status !== oldData[i].status)
-          ) {
-            let s = (newData[i].status === 'Approved' ? "अभिनंदन,जांच सफलतापूर्वक स्वीकृत" : "क्षमा करें, जांच अनुमोदन को अस्वीकार कर दिया गया है")
-            sendPushNotification(token, newData[i].status, s, {});
-          }
-          if (
-            newData[i].paymentRecievedFlag &&
-            oldData[i].paymentRecievedFlag &&
-            (newData[i].paymentRecievedFlag !== oldData[i].paymentRecievedFlag)
-          ) {
-            sendPushNotification(token, "भुगतान प्राप्त", "अभिनंदन,भुगतान सफलतापूर्वक प्राप्त किया गया", {});
-          }
-          if (
-            newData[i].quantityRecievedFlag &&
-            oldData[i].quantityRecievedFlag &&
-            (newData[i].quantityRecievedFlag !== oldData[i].quantityRecievedFlag)
-          ) {
-            sendPushNotification(token, "प्राप्त मात्रा", "अभिनंदन,मात्रा सफलतापूर्वक प्राप्त की गई", {});
-          }
-        
+      {
+
+              // for(let i=0;i<newData.length;i++){
+              //   let id = newData[i]._id
+              //   if(id){
+              //     if(obj.id){
+              //       obj.id.push({
+              //         status: newData[i].status,
+              //         paymentRecievedFlag: newData[i].paymentRecievedFlag,
+              //         quantityRecievedFlag: newData[i].quantityRecievedFlag
+              //       })
+              //     }
+              //     else{
+              //       obj.id = [{
+              //         status: newData[i].status,
+              //         paymentRecievedFlag: newData[i].paymentRecievedFlag,
+              //         quantityRecievedFlag: newData[i].quantityRecievedFlag
+              //       }]
+              //     }
+              //   }
+              // }
       }
     }
+      {
+            // if (oldData && oldData.length) {
+            //   for (let i = 0; i < oldData.length; i++) {
+            //     let id = oldData[i]._id
+            //     if (id) {
+            //       if (obj.id) {
+            //         obj.id.push({
+            //           status: oldData[i].status,
+            //           paymentRecievedFlag: oldData[i].paymentRecievedFlag,
+            //           quantityRecievedFlag: oldData[i].quantityRecievedFlag
+            //         })
+            //       }
+            //       else{
+            //         obj.id = [{
+            //           status: oldData[i].status,
+            //           paymentRecievedFlag: oldData[i].paymentRecievedFlag,
+            //           quantityRecievedFlag: oldData[i].quantityRecievedFlag
+            //         }]
+            //       }
+            //     }
+            //   }
+            // }
+            // && (newData.length === oldData.length)
+            // console.log('obj is',obj)
+      }
+    if (newData && oldData && oldData.length && newData.length) {
+      console.log('new data is', newData);
+      console.log('old data is ',oldData);
+      console.log('olddata length is ' + oldData.length+ 'new Data length is ' + newData.length);
+      {
+              // for (let i = 0; i < oldData.length && i < newData.length;i++) {
+              //     if (
+              //       newData[i].status &&
+              //       oldData[i].status &&
+              //       (newData[i].status !== oldData[i].status)
+              //     ) {
+              //       let s = (newData[i].status === 'Approved' ? "अभिनंदन,जांच सफलतापूर्वक स्वीकृत" : "क्षमा करें, जांच अनुमोदन को अस्वीकार कर दिया गया है")
+              //       sendPushNotification(token, newData[i].status, s, {});
+              //     }
+              //     if (
+              //       newData[i].paymentRecievedFlag &&
+              //       oldData[i].paymentRecievedFlag &&
+              //       (newData[i].paymentRecievedFlag !== oldData[i].paymentRecievedFlag)
+              //     ) {
+              //       sendPushNotification(token, "भुगतान प्राप्त", "अभिनंदन,भुगतान सफलतापूर्वक प्राप्त किया गया", {});
+              //     }
+              //     if (
+              //       newData[i].quantityRecievedFlag &&
+              //       oldData[i].quantityRecievedFlag &&
+              //       (newData[i].quantityRecievedFlag !== oldData[i].quantityRecievedFlag)
+              //     ) {
+              //       sendPushNotification(token, "प्राप्त मात्रा", "अभिनंदन,मात्रा सफलतापूर्वक प्राप्त की गई", {});
+              //     }
+
+              // }
+      }
+      oldData.forEach((itemX)=>{
+          let itemY=newData.find((item)=> item._id===itemX._id);
+          console.log('inside forEach old ');
+          console.log(itemX._id,itemY._id);
+          if(itemY){
+                        if (
+                          itemY.status &&
+                          itemX.status &&
+                          (itemY.status !== itemX.status)
+                        ) {
+                          let s = (itemY.status === 'Approved' ? "अभिनंदन,जांच सफलतापूर्वक स्वीकृत" : "क्षमा करें, जांच अनुमोदन को अस्वीकार कर दिया गया है")
+                          sendPushNotification(token, itemY.status, s, {});
+                        }
+                        if (
+                          itemY.paymentRecievedFlag &&
+                          itemX.paymentRecievedFlag &&
+                          (itemY.paymentRecievedFlag !== itemX.paymentRecievedFlag)
+                        ) {
+                          sendPushNotification(token, `भुगतान प्राप्त`, `अभिनंदन,भुगतान सफलतापूर्वक प्राप्त किया गया\n UTR : ${itemY.utr} \nरकम : ${itemY.paymentRecieved}`, {});
+                        }
+                        if (
+                          itemY.quantityRecievedFlag &&
+                          itemX.quantityRecievedFlag &&
+                          (itemY.quantityRecievedFlag !== itemX.quantityRecievedFlag)
+                        ) {
+                          sendPushNotification(token, "प्राप्त मात्रा", `अभिनंदन,मात्रा सफलतापूर्वक प्राप्त की गई\nआधार कार्ड नं : ${aadhar}\n पैन कार्ड: ${pan}\n मात्रा : ${itemY.quantityRecieved || 'Not Available'}\nदर : ${itemY.rate} \n भुगतान राशि(Rs.) : ${itemY.paymentDue || 'Not Available'}`, {});
+                        }
+          }
+      });
+
+
+    }
   } catch(error){
-    // sendPushNotification(
-    //   token,
-    //   "error",
-    //   "error fetching data", {}
-    // );
+    sendPushNotification(
+      token,
+      "error",
+      "error fetching data", {}
+    );
     console.log('error while fetching data',error)
   }
+  console.log("\n\n\n notify ended\n\n\n")
 };
 
 
 var intervalId;
-
-
-
-
-
 const timerStart = async () => {
   console.log("timer started");
   let userId = await AsyncStorage.getItem("user");
@@ -156,12 +223,12 @@ const timerStart = async () => {
   console.log("data fetched",data);
   let token=await AsyncStorage.getItem("token");
   console.log(token)
-  // sendPushNotification(
-  //   token,
-  //   "Timer start called",
-  //   "Timer start CAlled",
-  //   {}
-  // );
+  sendPushNotification(
+    token,
+    "Timer start called",
+    "Timer start CAlled",
+    {}
+  );
   try {
     const NOTIFICATION = "NOTIFICATION";
     console.log('inside try block')

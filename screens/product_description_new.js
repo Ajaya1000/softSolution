@@ -421,7 +421,7 @@ export default class Product_Description extends React.Component {
                                 }}
                                 style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: "center", backgroundColor: 'black' }}>
                                 <FontAwesome name="openid" size={24} color="white" />
-                                <Text style={{ fontSize: 17, color: '#fff', paddingLeft: 25 }}>जांच भेजें</Text>
+                                <Text style={{ fontSize: 17, color: '#fff', paddingLeft: 25 }}>उत्पाद भेजें</Text>
                             </TouchableOpacity>
                         </View>
                         {/* Modal View */}
