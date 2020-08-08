@@ -278,9 +278,9 @@ export default class Offers extends React.Component {
                   }
                 } >
                   { (item.product && item.product.name) && (<Text style={styles.subtitle}>उत्पाद: {item.product.name}</Text>)}
-                <Text style={styles.subtitle}>बोरी: {item.bori}</Text>
+                <Text style={styles.subtitle}>बोरी : {item.bori}</Text>
                 <Text style={styles.subtitle}>चालक : {item.driver}</Text>
-                <Text style={styles.subtitle}>गाडी नंबर: {item.vehicleNo}</Text>
+                <Text style={styles.subtitle}>गाडी नंबर : {item.vehicleNo}</Text>
                 <Text style={styles.subtitle}>वजन :  {item.weight}</Text>
 
                 {/* {(item.paymentDue)&&(<Text style={styles.subtitle}> भुगतान राशि :  {item.paymentDue}</Text>)}
