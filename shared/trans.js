@@ -370,6 +370,169 @@ export const CONSTANT = {
             en:"",
             hi: "प्राप्त मात्रा"
         },
+
+
+    },
+    profile:{
+        see_pan:{
+            en:"",
+            hi: "अपना pan अपलोड dekhe"
+        },
+        see_aadhar:{
+            en:"",
+            hi: "अपना आधार अपलोड dekhe"
+        },
+        logout:{
+            en:"",
+            hi: "लॉग आउट"
+        }
+    },
+    search:{
+        search_product:{
+            en:"",
+            hi: "उत्पादों को खोजना"
+        }
+    },
+    update_profile:{
+        update_succ:{
+            en:"",
+            hi: "उपयोगकर्ता update सुस्पष्ट रूप से"
+        },
+        not_granted:{
+            en:"",
+            hi: "क्षमा करें, हमें यह काम करने के लिए कैमरा रोल की अनुमति चाहिए!"
+        },
+        farmer:{
+            en:"",
+            hi: "किसान"
+        },
+        broker:{
+            en:"",
+            hi: "दलाल"
+        },
+        username:{
+            en:"",
+            hi: "उपयोगकर्ता नाम"
+        },
+        lastname:{
+            en:"",
+            hi: "अंतिम नाम दर्ज करो"
+        },
+        mobile:{
+            en:"",
+            hi: "मोबाइल नंबर"
+        },
+        address1: {
+            en:"",
+            hi: "पता 1"
+        },
+        address2: {
+            en: "",
+            hi: "पता 2"
+        },
+        city:{
+            en:"",
+            hi: "शहर"
+        },
+        state:{
+            en:"",
+            hi: "राज्य"
+        },
+        bank_name:{
+            en:"",
+            hi: "बैंक का नाम"
+        },
+        acc_num:{
+            en:"",
+            hi: "खाता संख्या"
+        },
+        ifsc:{
+            en:"",
+            hi: "IFSC कोड"
+        },
+        acc_holder:{
+            en:"",
+            hi: "खाताधारक का नाम"
+        },
+        aadhar:{
+            en:"",
+            hi: "आधार संख्या"
+        },
+        pan:{
+            en:"",
+            hi: "पैन"
+        },
+        upload_photo:{
+            en:"",
+            hi: "अपनी फोटो अपलोड करें"
+        },
+        aadhar_upload:{
+            en:"",
+            hi: "अपना आधार अपलोड करें"
+        },
+        pan_upload:{
+            en:"",
+            hi: "अपना पैन अपलोड करें"
+        },
+        how_document_upload: {
+            en: "",
+            hi: "आप दस्तावेज़ कैसे अपलोड करेंगे?"
+        },
+        use_camera: {
+            en: "",
+            hi: "कैमरा से"
+        },
+        use_gallery: {
+            en: "",
+            hi: "गैलरी से"
+        },
+        update:{
+            en:"",
+            hi: "अपडेट करें"
+        }
+
+    },
+    app:{
+        login: {
+            en:"",
+            hi: "लॉग इन"
+        },
+        signup: {
+            en:"",
+            hi: "साइन अप"
+        },
+        logoutdone:{
+            en:"",
+            hi: "लॉग आउट किया"
+        },
+        logout: {
+            en:"",
+            hi: "लॉग आउट"
+        },
+        myprofile:{
+            en:"",
+            hi: "मेरी प्रोफाइल"
+        },
+        update_profile:{
+            en:"",
+            hi: "प्रोफ़ाइल अपडेट करें"
+        },
+        offer_detail:{
+            en:"",
+            hi: "पूछताछ विवरण"
+        },
+        home:{
+            en:"",
+            hi: "घर"
+        },
+        search:{
+            en:"",
+            hi: "खोज"
+        },
+        info:{
+            en:"",
+            hi: "जांच"
+        },
         
 
     }
