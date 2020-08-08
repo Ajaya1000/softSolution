@@ -325,7 +325,7 @@ export default class signUp extends React.Component {
         admin: false,
       })
       .then(() => {
-        Alert, alert("उपयोगकर्ता पंजीकृत सुस्पष्ट रूप से");
+        Alert, alert("उपयोगकर्ता पंजीकृत सुस्पष्ट रूप से"); //granted
         this.setState({
           selected: "Farmer",
           imageProfile: null,
@@ -360,7 +360,7 @@ export default class signUp extends React.Component {
       })
       .catch((e) => {
         console.log(e.message);
-        Alert.alert("डुप्लिकेट पंजीकरण की अनुमति नहीं है");
+        Alert.alert("डुप्लिकेट पंजीकरण की अनुमति नहीं है"); //duplicate
       });
   };
   addTextInput = (index) => {
@@ -368,7 +368,7 @@ export default class signUp extends React.Component {
 
     textInput.push(
       <Item floatingLabel>
-        <Label>वस्तु</Label>
+        <Label>वस्तु</Label> {/*matter */}
         <Input onChangeText={(text) => this.addValues(text, index)} />
       </Item>
     );
@@ -727,7 +727,7 @@ export default class signUp extends React.Component {
           </View>
         </ProgressStep>
         <ProgressStep
-          label="डालना "
+          label="डालना " //add
           onSubmit={() =>
             this.submitData(
               this.state.fullName,
