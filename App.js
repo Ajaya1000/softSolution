@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, Alert } from "react-native";
+import { StyleSheet, Text, View, Image, Alert,Switch } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
@@ -313,7 +313,23 @@ const HomeTab = () => {
 
 const Drawer = createDrawerNavigator();
 
-const CustomDrawer = (props) => {
+
+export default class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state={
+      lang:true
+    }
+  }
+  toggleLang = () => {
+    console.log('toogleLang is called');
+    const isEn= this.state.lang;
+    console.log(isEn);
+    this.setState({
+      lang:!isEn
+    })
+  }
+  CustomDrawer = (props) => {
   return (
     <View style={{ flex: 1, backgroundColor: "#D3D3D3" }}>
       <View
@@ -326,7 +342,8 @@ const CustomDrawer = (props) => {
         }}
       ></View>
       <LoginCheck nav={props.navigation} />
-      {/* <View style={{marginTop:5, paddingLeft:10, backgroundColor:'#fff', flexDirection:'row', height:60, alignItems:'center', justifyContent:'space-around'}}>
+      {
+      /* <View style={{marginTop:5, paddingLeft:10, backgroundColor:'#fff', flexDirection:'row', height:60, alignItems:'center', justifyContent:'space-around'}}>
         <EvilIcons name="location" size={22} color="black" />
         <Text style={{fontSize:15}}>560004, Bangalore - 560004</Text>
         <Feather name="edit-2" size={20} color="#4CBB17" style={{marginLeft:15}} />
@@ -345,7 +362,8 @@ const CustomDrawer = (props) => {
           />
           <Text style={{fontSize:13}}>   Tomorrow 6:30AM -8:30AM</Text>
         </View>
-      </View> */}
+      </View> */
+      }
       {/* <View style={{flexDirection:'row', height:60, backgroundColor:'#d0f0c0', justifyContent:'space-around', alignItems:'center'}}>
         <Text style={{fontSize:13, color:'green', width:200}}>Get Priority slots with bbstar memebership</Text>
         <AntDesign name="caretright" size={18} color="green" />
@@ -361,6 +379,20 @@ const CustomDrawer = (props) => {
         <TouchableOpacity onPress={() => props.navigation.navigate("Home")}>
           <Text style={{ fontSize: 18, marginBottom: 20 }}>घर</Text>
         </TouchableOpacity>
+
+        <View style={ { flexDirection:'row' }}>
+          <Text style={{flex:1}}>Hindi/English</Text>
+          <Switch
+          style={{flex:1}}
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={true ? "#f5dd4b" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange = {
+          this.toggleLang
+        }
+        value={this.state.lang}
+      />
+        </View>
         {/* <TouchableOpacity onPress={() => props.navigation.navigate('Offers')}>
           <Text style={{fontSize:18, marginBottom:20}}>Offers</Text>
         </TouchableOpacity>
@@ -375,13 +407,14 @@ const CustomDrawer = (props) => {
   );
 };
 
-export default class App extends React.Component {
   render() {
     return (
       <NavigationContainer>
         <Drawer.Navigator
           initialRouteName="Home"
-          drawerContent={(props) => CustomDrawer(props)}
+          // lang={this.state.lang}
+          // toggleLang= {this.toggleLang}
+          drawerContent={(props) => this.CustomDrawer(props,)}
         >
           <Drawer.Screen name="Home" component={HomeTab} />
           <Drawer.Screen name="LoginSignup" component={LoginSignup} />

@@ -3,9 +3,10 @@ import { StyleSheet, TextInput, Text, View, Dimensions } from 'react-native';
 import {FontAwesome5, Feather,EvilIcons,MaterialIcons} from '@expo/vector-icons';
 import Constant from 'expo-constants';
 import { Searchbar } from 'react-native-paper';
+import { CONSTANT } from '../shared/trans';
 const { width } = Dimensions.get('window')
 const mycolor = "#212121" 
-
+const strings= CONSTANT.h;
 export default class Header extends React.Component {
     state={
         searchtext:""
