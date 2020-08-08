@@ -8,8 +8,9 @@ import {MaterialCommunityIcons,AntDesign,Entypo} from '@expo/vector-icons';
 import * as Permissions from 'expo-permissions';
 import axios from "axios";
 import { AsyncStorage } from 'react-native';
+import { CONSTANT } from '../../shared/trans';
 let baseUrl = `https://knekisan.com/`;
-
+const strings= CONSTANT.login;
 export default class Login extends React.Component{
     constructor(props) {
         super(props);
@@ -17,13 +18,23 @@ export default class Login extends React.Component{
           username: "",
           password: "",
           responce: null,
-          loginText :   <Text style={{textAlign:"center",color:"#fff"}}>लॉग इन</Text>,
+        loginText :   <Text style={{textAlign:"center",color:"#fff"}}>Login</Text>,
           disableBttn: false,
-          loginPressed:false
+          loginPressed:false,
+          lang:'en'
         };
       }
-
+      omponentDidMount() {
+          (async () => {
+            let value = await AsyncStorage.getItem('lang');
+            value = value || 'en';
+            this.setState({
+              lang: value
+            })
+          })();
+        }
     loginSubmit = () => {
+      lang= this.state.lang;
       this.setState({
         loginText:  <Spinner />,
         disableBttn:true
@@ -70,7 +81,7 @@ export default class Login extends React.Component{
               console.log('user_data saving successful')
             AsyncStorage.setItem('username',this.state.username)
             .then(async()=>{
-              Alert.alert("आप सफलतापूर्वक लॉग इन हो गए हैं!")
+              Alert.alert(strings.successful_login[lang])
               this.setState({
                 username:null,
                 password:null,
@@ -78,7 +89,7 @@ export default class Login extends React.Component{
               })
               this.props.nav.navigate("Home")
               this.setState({
-                loginText:<Text style={{textAlign:"center",color:"#fff"}}>लॉग इन</Text>,
+                loginText:<Text style={{textAlign:"center",color:"#fff"}}>{strings.login[lang]}</Text>,
                 disableBttn:false
               })
               // this.props.navigation.goBack();
@@ -99,21 +110,22 @@ export default class Login extends React.Component{
           })
       }).catch(e=>{
         console.log('error from backend: '+e);
-        Alert.alert("प्रमाणिकता मान्य नहीं!")
+        Alert.alert(strings.unsuccessful_login[lang])
         this.setState({
-          loginText:<Text style={{textAlign:"center",color:"#fff"}}>लॉग इन</Text>,
+          loginText:<Text style={{textAlign:"center",color:"#fff"}}>{strings.login[lang]}</Text>,
           disableBttn:false
         })
       })
     }
 
     render(){
+      lang= this.state.lang;
         return(
             <View>
                 {/* <Text style={{fontSize:20,marginTop:35,textAlign:"center"}}>Hey,User</Text> */}
                 <Form style={{marginTop:100}}> 
              <Item floatingLabel>
-                <Label>उपयोगकर्ता नाम</Label>
+                <Label>{strings.username[lang]}</Label>
                  <Input 
                 value={this.state.username}
                 onChangeText={
@@ -123,7 +135,7 @@ export default class Login extends React.Component{
             </Item>
             <Item style={{marginTop:25}}
                   floatingLabel>
-              <Label>कुंजिका</Label>
+              <Label>{strings.password[lang]}</Label>
                 <Input 
                 secureTextEntry={true}
                 value={this.state.password}

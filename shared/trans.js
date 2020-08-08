@@ -24,6 +24,10 @@ export const CONSTANT = {
         class:{
             en:"",
             hi: "वर्गों के अनुसार खरीदारी"
+        },
+        search: {
+            en:"",
+            hi: "खोज"
         }
     },
     h3:{
@@ -82,6 +86,14 @@ export const CONSTANT = {
         quantity4: {
             en: "",
             hi: "मात्रा :"
+        },
+        quantity5:{
+            en:"",
+            hi: "\nदर :"
+        },
+        quantity6:{
+            en:"",
+            hi: "\n भुगतान राशि(Rs.) :"
         }
     },
     login: {
@@ -126,6 +138,10 @@ export const CONSTANT = {
         picker:{
             en:"",
             hi: "उपयोगकर्ता प्रकार का चयन करें"
+        },
+        user:{
+            en:"",
+            hi: "उपयोगकर्ता"
         },
         farmer:{
             en:"",
@@ -182,6 +198,10 @@ export const CONSTANT = {
         commodity_remove:{
             en:"",
             hi: "कमोडिटी निकालें"
+        },
+        bank:{
+            en:"",
+            hi:"बैंक"
         },
         bank_name:{
             en:"",

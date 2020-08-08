@@ -4,6 +4,7 @@ import { Ionicons, FontAwesome5, Feather,EvilIcons,FontAwesome} from '@expo/vect
 import Constant from 'expo-constants';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AsyncStorage } from 'react-native';
+import { CONSTANT } from '../shared/trans';
 
 const { width } = Dimensions.get('window')
 const mycolor = "#212121" 
@@ -13,16 +14,26 @@ const mycolor = "#212121"
 //     // console.log('test :'+JSON.stringify(test));  
     
 //   }
+const strings= CONSTANT.hc;
 export class Header extends React.Component{
     constructor(props) {
         super(props);
          
         this.state = {
-            username: null
+            username: null,
+            lang:'en'
         };
          }
+
     componentDidMount(){
-        this._checklogin()
+        this._checklogin();
+         (async () => {
+             let value = await AsyncStorage.getItem('lang');
+             value = value || 'en';
+             this.setState({
+                 lang: value
+             })
+         })();
     }
     _checklogin = async () =>{
         let test= await AsyncStorage.getItem('username')
@@ -33,11 +44,12 @@ export class Header extends React.Component{
     }
     render() {
         this._checklogin();
+        lang= this.state.lang;
         let Id = null
         let msg = null
         if (this.state.username !==null) {
             Id = this.state.username
-            msg = "स्वागत हे : "
+            msg =strings.cong[lang]
         }
         else{
             msg = ""

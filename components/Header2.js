@@ -2,14 +2,27 @@ import React from 'react';
 import { StyleSheet, TextInput, Text, View, Dimensions } from 'react-native';
 import {FontAwesome5, Feather,EvilIcons,MaterialIcons} from '@expo/vector-icons';
 import Constant from 'expo-constants';
+import { CONSTANT } from '../shared/trans';
+import { AsyncStorage } from 'react-native';
 const { width } = Dimensions.get('window')
 const mycolor = "#212121" 
-
+const strings = CONSTANT.h2;
 export default class Header2 extends React.Component {
     state={
-        searchtext:""
+        searchtext:"",
+        lang:'en'
+    }
+    componentDidMount() {
+        (async () => {
+            let value = await AsyncStorage.getItem('lang');
+            value = value || 'en';
+            this.setState({
+                lang: value
+            })
+        })();
     }
   render(){
+      lang=this.state.lang;
     return (
         <View style={{
             paddingTop:Constant.statusBarHeight,
@@ -32,7 +45,7 @@ export default class Header2 extends React.Component {
           }}>
              <Feather name="menu" size={30} color="white" />
              <View>
-                 <Text style={{color:"#fff", fontSize:20}}>वर्गों के अनुसार खरीदारी</Text>
+        <Text style={{color:"#fff", fontSize:20}}>{strings.class[lang]}</Text>
              </View>
              <View></View>
           </View>
@@ -46,7 +59,7 @@ export default class Header2 extends React.Component {
                         backgroundColor: "#fff",
                         paddingHorizontal:15}}
                         autoCapitalize="none"
-                        placeholder="खोज"
+                        placeholder={strings.search[lang]}
                         onChangeText={searchtext => this.setState({ searchtext })}
                         value={this.state.searchtext}
                 ></TextInput>

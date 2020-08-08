@@ -3,22 +3,34 @@ import { StyleSheet, TextInput, Text, View, Dimensions, TouchableOpacity } from 
 import {Ionicons, Feather,EvilIcons,MaterialCommunityIcons} from '@expo/vector-icons';
 import Constant from 'expo-constants';
 import axios from "axios";
+import { AsyncStorage } from 'react-native';
+import { CONSTANT } from '../shared/trans';
 const { width } = Dimensions.get('window')
 const mycolor = "#212121" 
 let baseUrl = `https://knekisan.com/`;
-
+const strings= CONSTANT.sh;
 export default class Search_Header extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             searchtext:"",
-            products:[]
+            products:[],
+            lang:'en'
 
         }
         this.navigation = props.navigation
       }
       componentWillMount(){
         this.getProducts();
+      }
+      componentDidMount() {
+        (async () => {
+          let value = await AsyncStorage.getItem('lang');
+          value = value || 'en';
+          this.setState({
+            lang: value
+          })
+        })();
       }
         getProducts = () =>{
           axios.get(`${baseUrl}api/v1/product/getall`).
@@ -33,7 +45,9 @@ export default class Search_Header extends React.Component {
                 
             })
           }
+
   render(){
+    lang= this.state.lang;
     return (
         <View style={{
             paddingTop:Constant.statusBarHeight,
@@ -55,7 +69,7 @@ export default class Search_Header extends React.Component {
                 <Ionicons name="ios-arrow-back" size={30} color="white" />
             </TouchableOpacity>
              <View>
-                 <Text style={{color:"#fff", fontSize:18}}>उत्पादों को खोजना</Text>
+                 <Text style={{color:"#fff", fontSize:18}}>{strings.product_search[lang]}</Text>
              </View>
              <View >
                  <MaterialCommunityIcons name="barcode-scan" size={24} color="#fff" />
@@ -72,7 +86,7 @@ export default class Search_Header extends React.Component {
                         borderRadius:5,
                         paddingHorizontal:15}}
                         autoCapitalize="none"
-                        placeholder="खोज"
+                        placeholder={strings.search[lang]}
                         onChangeText={searchtext => this.setState({ searchtext })}
                         value={this.state.searchtext}
                     autoFocus={true}

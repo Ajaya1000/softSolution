@@ -6,6 +6,7 @@ import {
   Alert,
   TextInput,
   ScrollView,
+  AsyncStorage,
 } from "react-native";
 import { ProgressSteps, ProgressStep } from "react-native-progress-steps";
 import { Form, Item, Label, Button, Icon, Input, Picker } from "native-base";
@@ -15,12 +16,13 @@ import { MaterialCommunityIcons, AntDesign, Entypo } from "@expo/vector-icons";
 import * as Permissions from "expo-permissions";
 import axios from "axios";
 import AwesomeAlert from "react-native-awesome-alerts";
+import { CONSTANT } from "../../shared/trans";
 // import { ScrollView } from 'react-native-gesture-handler';
 // import RNFetchBlob from 'react-native-fetch-blob'
 // import {  } from "react-native-fetch-blob";
 let baseUrl = `https://knekisan.com/`;
 // let baseUrl = `http://192.168.1.65:4000/`;
-
+const strings= CONSTANT.signup;
 export default class signUp extends React.Component {
   constructor(props) {
     super(props);
@@ -54,10 +56,19 @@ export default class signUp extends React.Component {
       inputData: [],
       bankBttn: false,
       showAlert: false,
+      lang:'en'
     };
   }
   componentDidMount() {
     this.getPermissionAsync();
+    (async () => {
+      let value = await AsyncStorage.getItem('lang');
+      value = value || 'en';
+      this.setState({
+        lang: value
+      })
+    })();
+  
   }
   onValueChange(value) {
     this.setState({
@@ -71,14 +82,16 @@ export default class signUp extends React.Component {
     });
   }
   getPermissionAsync = async () => {
+    let  lang= this.state.lang;
     if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
-        alert("क्षमा करें, हमें यह काम करने के लिए कैमरा रोल की अनुमति चाहिए!");
+        alert(strings.not_granted[lang]);
       }
     }
   };
   _pickImageProfileGallery = async () => {
+    let lang = this.state.lang;
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -293,6 +306,7 @@ export default class signUp extends React.Component {
     pavati,
     bbnk
   ) => {
+    let lang = this.state.lang;
     axios
       .post(`${baseUrl}api/v1/authentication/register/`, {
         userType: selected,
@@ -325,7 +339,7 @@ export default class signUp extends React.Component {
         admin: false,
       })
       .then(() => {
-        Alert, alert("उपयोगकर्ता पंजीकृत सुस्पष्ट रूप से"); //granted
+        Alert, alert(strings.granted[lang]); //granted
         this.setState({
           selected: "Farmer",
           imageProfile: null,
@@ -360,15 +374,16 @@ export default class signUp extends React.Component {
       })
       .catch((e) => {
         console.log(e.message);
-        Alert.alert("डुप्लिकेट पंजीकरण की अनुमति नहीं है"); //duplicate
+        Alert.alert(strings.duplicate[lang]); //duplicate
       });
   };
   addTextInput = (index) => {
+    let lang = this.state.lang;
     let textInput = this.state.textInput;
 
     textInput.push(
       <Item floatingLabel>
-        <Label>वस्तु</Label> {/*matter */}
+        <Label>{strings.matter[lang]}</Label> {/*matter */}
         <Input onChangeText={(text) => this.addValues(text, index)} />
       </Item>
     );
@@ -468,10 +483,10 @@ export default class signUp extends React.Component {
   };
 
   render() {
-    let { image } = this.state;
+    let { image,lang } = this.state;
     return (
       <ProgressSteps>
-        <ProgressStep nextBtnDisabled={this.checUser()} label="उपयोगकर्ता">
+        <ProgressStep nextBtnDisabled={this.checUser()} label={strings.user[lang]}>
           <View style={{ backgroundColor: "#fff" }}>
             {/* <Form> */}
             <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -481,15 +496,15 @@ export default class signUp extends React.Component {
               <View style={{ marginTop: -25, marginRight: 13 }}>
                 <Picker
                   mode="dropdown"
-                  iosHeader="उपयोगकर्ता प्रकार का चयन करें"
+                  iosHeader={strings.picker[lang]}
                   iosIcon={<Icon name="arrow-down" />}
                   style={{ width: 150, marginLeft: 5, marginBottom: -30 }}
                   selectedValue={this.state.selected}
                   onValueChange={this.onValueChange.bind(this)}
                 >
-                  <Picker.Item label="किसान" value="Farmer" />
+                  <Picker.Item label={strings.farmer[lang]} value="Farmer" />
                   <Picker.Item label="Adatiya" value="Adatiya" />
-                  <Picker.Item label="दलाल" value="Broker" />
+                  <Picker.Item label={strings.broker[lang]} value="Broker" />
                 </Picker>
               </View>
             </View>
@@ -510,7 +525,7 @@ export default class signUp extends React.Component {
             </Item> */}
             <ScrollView style={{ marginBottom: 100, paddingHorizontal: 10 }}>
               <Item style={{ marginTop: 15 }} floatingLabel>
-                <Label>उपयोगकर्ता नाम</Label>
+                <Label>{strings.username[lang]}</Label>
                 <Input
                   value={this.state.username}
                   autoCorrect={false}
@@ -520,7 +535,7 @@ export default class signUp extends React.Component {
                 />
               </Item>
               <Item style={{ marginTop: 18 }} floatingLabel>
-                <Label>कुंजिका</Label>
+                <Label>{strings.password[lang]}</Label>
                 <Input
                   value={this.state.password}
                   secureTextEntry={true}
@@ -531,7 +546,7 @@ export default class signUp extends React.Component {
                 />
               </Item>
               <Item style={{ marginTop: 18 }} floatingLabel>
-                <Label>मोबाइल नंबर</Label>
+                <Label>{strings.mobile[lang]}</Label>
                 <Input
                   value={this.state.mNumber}
                   autoCorrect={false}
@@ -541,7 +556,7 @@ export default class signUp extends React.Component {
                 />
               </Item>
               <Item style={{ marginTop: 18 }} floatingLabel>
-                <Label>पता 1</Label>
+                <Label>{strings.address1[lang]}</Label>
                 <Input
                   value={this.state.addressLine1}
                   autoCorrect={false}
@@ -553,7 +568,7 @@ export default class signUp extends React.Component {
                 />
               </Item>
               <Item style={{ marginTop: 18 }} floatingLabel>
-                <Label>पता 2</Label>
+                <Label>{strings.address2[lang]}</Label>
                 <Input
                   value={this.state.addressLine2}
                   autoCorrect={false}
@@ -565,7 +580,7 @@ export default class signUp extends React.Component {
                 />
               </Item>
               <Item style={{ marginTop: 18 }} floatingLabel>
-                <Label>शहर</Label>
+                <Label>{strings.city[lang]}</Label>
                 <Input
                   value={this.state.uCity}
                   autoCorrect={false}
@@ -575,7 +590,7 @@ export default class signUp extends React.Component {
                 />
               </Item>
               <Item bbbbbbbbbbbbb style={{ marginTop: 18 }} floatingLabel>
-                <Label>राज्य</Label>
+                <Label>{strings.state[lang]}</Label>
                 <Input
                   value={this.state.uState}
                   autoCorrect={false}
@@ -588,13 +603,13 @@ export default class signUp extends React.Component {
             {/* </Form> */}
           </View>
         </ProgressStep>
-        <ProgressStep onNext={this.getValues} label="भूमि">
+        <ProgressStep onNext={this.getValues} label={strings.land[lang]}>
           <View style={{ backgroundColor: "#fff" }}>
             {/* <Form> */}
             <View style={{ flexDirection: "row", flex: 3 }}>
               <View>
                 <Item floatingLabel style={{ width: 100, marginLeft: 15 }}>
-                  <Label>भूमि</Label>
+                  <Label>{strings.land[lang]}</Label>
                   <Input
                     value={this.state.land}
                     autoCorrect={false}
@@ -612,8 +627,8 @@ export default class signUp extends React.Component {
                   selectedValue={this.state.area}
                   onValueChange={this.onValueChangeArea.bind(this)}
                 >
-                  <Picker.Item label="वर्ग" value="sq" />
-                  <Picker.Item label="एकड़" value="acre" />
+                  <Picker.Item label={strings.class[lang]} value="sq" />
+                  <Picker.Item label={strings.measure[lang]} value="acre" />
                 </Picker>
               </View>
               {/* <View style={{flex:1}}></View> */}
@@ -627,7 +642,7 @@ export default class signUp extends React.Component {
                       this.addTextInput(this.state.textInput.length)
                     }
                   >
-                    <Text style={{ color: "#fff" }}>कमोडिटी जोड़ें</Text>
+                    <Text style={{ color: "#fff" }}>{strings.commodity_add[lang]}</Text>
                   </Button>
                 </View>
                 <View style={{ margin: 10 }}>
@@ -635,7 +650,7 @@ export default class signUp extends React.Component {
                     style={{ width: 200, justifyContent: "center" }}
                     onPress={() => this.removeTextInput()}
                   >
-                    <Text style={{ color: "#fff" }}>कमोडिटी निकालें</Text>
+                    <Text style={{ color: "#fff" }}>{strings.commodity_remove[lang]}</Text>
                   </Button>
                 </View>
               </View>
@@ -662,33 +677,33 @@ export default class signUp extends React.Component {
         <ProgressStep
           nextBtnDisabled={this.checkBank()}
           // nextBtnDisabled={this.state.bankBttn}
-          label="बैंक"
+          label={strings.bank[lang]}
         >
           <View style={{ backgroundColor: "#fff", paddingHorizontal: 10 }}>
             {/* <Form> */}
             <Item style={{ marginTop: 18 }} floatingLabel>
-              <Label>बैंक का नाम</Label>
+              <Label>{strings.bank_name[lang]}</Label>
               <Input
                 value={this.state.bank_name}
                 onChangeText={(bank_name) => this.setState({ bank_name })}
               />
             </Item>
             <Item style={{ marginTop: 18 }} floatingLabel>
-              <Label>खाता संख्या</Label>
+              <Label>{strings.acc_num[lang]}</Label>
               <Input
                 value={this.state.accNumber}
                 onChangeText={(accNumber) => this.setState({ accNumber })}
               />
             </Item>
             <Item style={{ marginTop: 18 }} floatingLabel>
-              <Label>IFSC कोड</Label>
+              <Label>{strings.ifsc[lang]}</Label>
               <Input
                 value={this.state.ifscCode}
                 onChangeText={(ifscCode) => this.setState({ ifscCode })}
               />
             </Item>
             <Item style={{ marginTop: 18 }} floatingLabel>
-              <Label>खाताधारक का नाम</Label>
+              <Label>{strings.acc_holder[lang]}</Label>
               <Input
                 value={this.state.accHolderName}
                 onChangeText={(accHolderName) =>
@@ -703,7 +718,7 @@ export default class signUp extends React.Component {
           <View style={{ backgroundColor: "#fff" }}>
             <Form>
               <Item style={{ marginTop: 18 }} floatingLabel>
-                <Label>आधार संख्या</Label>
+                <Label>{strings.aadhar[lang]}</Label>
                 <Input
                   onChangeText={(aadharNumber) =>
                     this.setState({ aadharNumber })
@@ -713,21 +728,21 @@ export default class signUp extends React.Component {
                 />
               </Item>
               <Item style={{ marginTop: 18 }} floatingLabel>
-                <Label>पैन</Label>
+                <Label>{strings.pan[lang]}</Label>
                 <Input
                   onChangeText={(pan) => this.setState({ pan })}
                   maxLength={10}
                 />
               </Item>
               <Item style={{ marginTop: 18 }} floatingLabel>
-                <Label>पपावती /ऋण पुस्तिका</Label>
+                <Label>{strings.pavati[lang]}</Label>
                 <Input onChangeText={(pavati) => this.setState({ pavati })} />
               </Item>
             </Form>
           </View>
         </ProgressStep>
         <ProgressStep
-          label="डालना " //add
+          label={strings.add[lang]} //add
           onSubmit={() =>
             this.submitData(
               this.state.fullName,
@@ -760,7 +775,7 @@ export default class signUp extends React.Component {
                   size={26}
                   color="black"
                 />
-                <Text>&nbsp;&nbsp;:अपनी फोटो अपलोड करें</Text>
+                <Text>&nbsp;&nbsp;:{strings.upload_photo[lang]}</Text>
                 <Text>
                   &nbsp;&nbsp;
                   <Entypo name={this.state.check1} size={18} color="green" />
@@ -771,7 +786,7 @@ export default class signUp extends React.Component {
                 style={{ flexDirection: "row", marginTop: 25 }}
               >
                 <AntDesign name="idcard" size={26} color="black" />
-                <Text>&nbsp;&nbsp;:अपना आधार अपलोड करें</Text>
+                <Text>&nbsp;&nbsp;:{strings.aadhar_upload[lang]}</Text>
                 <Text>
                   &nbsp;&nbsp;
                   <Entypo name={this.state.check2} size={18} color="green" />
@@ -782,7 +797,7 @@ export default class signUp extends React.Component {
                 style={{ flexDirection: "row", marginTop: 25 }}
               >
                 <AntDesign name="idcard" size={26} color="black" />
-                <Text>&nbsp;&nbsp;:अपना पैन अपलोड करें</Text>
+                <Text>&nbsp;&nbsp;:{strings.pan_upload[lang]}</Text>
                 <Text>
                   &nbsp;&nbsp;
                   <Entypo name={this.state.check3} size={18} color="green" />
@@ -792,13 +807,13 @@ export default class signUp extends React.Component {
                 show={this.state.showAlert}
                 showProgress={false}
                 // title=""
-                message="आप दस्तावेज़ कैसे अपलोड करेंगे?"
+                message={strings.how_document_upload[lang]}
                 closeOnTouchOutside={true}
                 closeOnHardwareBackPress={false}
                 showCancelButton={true}
                 showConfirmButton={true}
-                cancelText="कैमरा से"
-                confirmText="गैलरी से"
+                cancelText={strings.use_camera[lang]}
+                confirmText={strings.use_gallery[lang]}
                 confirmButtonColor="#DD6B55"
                 onCancelPressed={() => {
                   this._pickImageProfileCamera();

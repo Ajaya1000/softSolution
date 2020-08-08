@@ -9,9 +9,20 @@ const mycolor = "#212121"
 const strings= CONSTANT.h;
 export default class Header extends React.Component {
     state={
-        searchtext:""
+        searchtext:"",
+        lang:'en'
+    }
+    componentDidMount(){
+        (async()=>{
+            let value= await AsyncStorage.getItem('lang');
+            value = value || 'en';
+            this.setState({
+                lang:value
+            })
+        })();
     }
   render(){
+      lang=this.state.lang;
     return (
         <View style={{
             paddingTop:Constant.statusBarHeight,
@@ -34,8 +45,8 @@ export default class Header extends React.Component {
           }}>
              <Feather name="menu" size={30} color="white" />
              <View>
-                 <Text style={{color:"#fff"}}>आपकी स्थिति</Text>
-                 <Text style={{color:"#fff"}}>5600004, बैंगलोर</Text>
+                 <Text style={{color:"#fff"}}>{strings.place[lang]}</Text>
+                 <Text style={{color:"#fff"}}>{strings.place2[lang]}</Text>
              </View>
              <FontAwesome5 name="user-circle" size={30} color="white" />
           </View>
@@ -49,7 +60,7 @@ export default class Header extends React.Component {
                         backgroundColor: "#fff",
                         paddingHorizontal:15}}
                         autoCapitalize="none"
-                        placeholder="खोज"
+                        placeholder={`${strings.search[lang]}`}
                         onChangeText={searchtext => this.setState({ searchtext })}
                         value={this.state.searchtext}
                 ></TextInput>

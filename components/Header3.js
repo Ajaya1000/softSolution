@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextInput, Text, View, Dimensions } from 'react-native';
 import { SimpleLineIcons, Feather,EvilIcons,MaterialIcons} from '@expo/vector-icons';
 import Constant from 'expo-constants';
-const { width } = Dimensions.get('window')
-const mycolor = "#212121" 
+import { AsyncStorage } from 'react-native';
+import { CONSTANT } from '../shared/trans';
+const { width } = Dimensions.get('window');
 
+const mycolor = "#212121" 
+const strings = CONSTANT.h3;
 export const Header3 = () => {
+    
+    const [lang,setlang] = useState('en');
+    useEffect(()=>{
+        (async () => {
+            let value = await AsyncStorage.getItem('lang');
+            value = value || 'en';
+            setlang(value);
+        })();
+    },[])
     return (
         <View style={{
             paddingTop:Constant.statusBarHeight,
@@ -24,7 +36,7 @@ export const Header3 = () => {
           }}>
              <Feather name="menu" size={30} color="white" />
              <View>
-                 <Text style={{color:"#fff", fontSize:20}}>पूछताछ</Text>
+                 <Text style={{color:"#fff", fontSize:20}}>{strings.ask[lang]}</Text>
              </View>
              <View>
                  <EvilIcons name="search" size={32} color="#fff" style={{marginTop:5, marginLeft:-13}} />
@@ -53,7 +65,7 @@ export const Header4 = () => {
           }}>
              <Feather name="menu" size={30} color="white" />
              <View>
-                 <Text style={{color:"#fff", fontSize:20}}>टोकरी की समीक्षा करें</Text>
+                 <Text style={{color:"#fff", fontSize:20}}>{strings.basket[lang]}</Text>
              </View>
              {/* <View style={{ flexDirection:"row", justifyContent:"space-around"}}> */}
                 <View style={{marginLeft:5}}>

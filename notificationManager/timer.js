@@ -3,8 +3,9 @@ import * as BackgroundFetch from "expo-background-fetch";
 import { AsyncStorage } from "react-native";
 import { registerForPushNotificationsAsync, sendPushNotification } from ".";
 import * as TaskManager from "expo-task-manager";
+import { CONSTANT } from "../shared/trans";
 // var timerId;
-
+const strings=CONSTANT.timer;
 var data = [];
 var makeRemoteRequest = async (userId) => {
   let baseUrl = `https://knekisan.com/`
@@ -45,6 +46,13 @@ export var notify = async () => {
   // let quantity = item.quantityRecieved;
   // let paymentDue = item.paymentDue;
   let token = await AsyncStorage.getItem("token");
+  let lang ;
+  try{
+    lang = await AsyncStorage.getItem('lang');
+  }catch (error) {
+    lang='en';
+  }
+  lang = value || 'en';
   if(token){
     console.log(token);
   }
@@ -181,7 +189,7 @@ export var notify = async () => {
                           itemX.status &&
                           (itemY.status !== itemX.status)
                         ) {
-                          let s = (itemY.status === 'Approved' ? "अभिनंदन,जांच सफलतापूर्वक स्वीकृत" : "क्षमा करें, जांच अनुमोदन को अस्वीकार कर दिया गया है")
+                          let s = (itemY.status === 'Approved' ? strings.approve1[lang] : strings.approve2[lang])
                           sendPushNotification(token, itemY.status, s, {});
                         }
                         if (
@@ -189,14 +197,14 @@ export var notify = async () => {
                           itemX.paymentRecievedFlag &&
                           (itemY.paymentRecievedFlag !== itemX.paymentRecievedFlag)
                         ) {
-                          sendPushNotification(token, `भुगतान प्राप्त`, `अभिनंदन,भुगतान सफलतापूर्वक प्राप्त किया गया\n UTR : ${itemY.utr} \nरकम : ${itemY.paymentRecieved}`, {});
+                          sendPushNotification(token, strings.payment1[lang], `${strings.payment2[lang]} ${itemY.utr} ${strings.payment3[lang]} ${itemY.paymentRecieved}`, {});
                         }
                         if (
                           itemY.quantityRecievedFlag &&
                           itemX.quantityRecievedFlag &&
                           (itemY.quantityRecievedFlag !== itemX.quantityRecievedFlag)
                         ) {
-                          sendPushNotification(token, "प्राप्त मात्रा", `अभिनंदन,मात्रा सफलतापूर्वक प्राप्त की गई\nआधार कार्ड नं : ${aadhar}\n पैन कार्ड: ${pan}\n मात्रा : ${itemY.quantityRecieved || 'Not Available'}\nदर : ${itemY.rate} \n भुगतान राशि(Rs.) : ${itemY.paymentDue || 'Not Available'}`, {});
+                          sendPushNotification(token, strings.quantity1[lang], `${strings.quantity2[lang]} ${aadhar}\n ${strings.quantity3[lang]} ${pan}\n ${strings.quantity4[lang]} ${itemY.quantityRecieved || 'Not Available'} ${strings.quantity5[lang]} ${itemY.rate} \n ${strings.quantity6[lang]} ${itemY.paymentDue || 'Not Available'}`, {});
                         }
           }
       });

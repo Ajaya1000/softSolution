@@ -324,6 +324,7 @@ export default class App extends React.Component {
   toggleLang = () => {
     console.log('toogleLang is called');
     const isEn= this.state.lang;
+    await AsyncStorage.setItem('lang',isEn?'en':'hi');
     console.log(isEn);
     this.setState({
       lang:!isEn
