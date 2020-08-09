@@ -21,6 +21,8 @@ import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { View } from "react-native-animatable";
+import { CONSTANT } from "../shared/trans";
+const strings = CONSTANT.update_profile;
 export default class UpdateProfile extends Component {
   constructor(props) {
     super(props);
@@ -71,9 +73,17 @@ export default class UpdateProfile extends Component {
       showAlert: false,
       firstName: "",
       lastName: "",
+      lang:'en'
     };
   }
   componentDidMount() {
+    (async () => {
+      let value = await AsyncStorage.getItem('lang');
+      value = value || 'en';
+      this.setState({
+        lang: value
+      })
+    })();
     this.getPermissionAsync();
     console.log("component did mount called ajay");
     (async () => {
@@ -127,6 +137,7 @@ export default class UpdateProfile extends Component {
   }
 
   handleSubmit = () => {
+    let lang= this.state.lang;
     let obj = { id: this.state.id };
     console.log("user id is " + obj.id);
     if (this.state.selectedChanged) obj.userType = this.state.selected;
@@ -161,7 +172,7 @@ export default class UpdateProfile extends Component {
       .then((res) => {
         console.log("inside update");
         console.log(res);
-        Alert.alert("उपयोगकर्ता update सुस्पष्ट रूप से");
+        Alert.alert(strings.update_succ[lang]);
         (async () => {
           try {
             await AsyncStorage.setItem(
@@ -181,10 +192,11 @@ export default class UpdateProfile extends Component {
       });
   };
   getPermissionAsync = async () => {
+    let lang = this.state.lang;
     if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
-        alert("क्षमा करें, हमें यह काम करने के लिए कैमरा रोल की अनुमति चाहिए!");
+        alert(strings.not_granted[lang]);
       }
     }
   };
@@ -379,6 +391,7 @@ export default class UpdateProfile extends Component {
   };
 
   render() {
+    let lang = this.state.lang;
     return (
       <Container>
         <Content>
@@ -397,13 +410,13 @@ export default class UpdateProfile extends Component {
               this.setState({ selected, selectedChanged: true })
             }
           >
-            <Picker.Item label="किसान" value="Farmer" />
+            <Picker.Item label={strings.farmer[lang]} value="Farmer" />
             <Picker.Item label="Adatiya" value="Adatiya" />
-            <Picker.Item label="दलाल" value="Broker" />
+            <Picker.Item label={strings.broker[lang]} value="Broker" />
           </Picker>
           <Form style={{ flexDirection: "row", flex: 1 }}>
             <Item floatingLabel style={{ width: 150 }}>
-              <Label>उपयोगकर्ता नाम</Label>
+              <Label>{strings.username[lang]}</Label>
               <Input
                 value={this.state.username}
                 onChangeText={(firstName) =>
@@ -415,7 +428,7 @@ export default class UpdateProfile extends Component {
               />
             </Item>
             <Item floatingLabel style={{ width: 150, marginLeft: 50 }}>
-              <Label>अंतिम नाम दर्ज करो</Label>
+              <Label>{strings.lastname[lang]}</Label>
               <Input
                 value={this.state.lastName}
                 onChangeText={(firstName) =>
@@ -428,7 +441,7 @@ export default class UpdateProfile extends Component {
           </Form>
           <Form style={{ flex: 1 }}>
             <Item floatingLabel>
-              <Label>मोबाइल नंबर</Label>
+              <Label>{strings.mobile[lang]}</Label>
               <Input
                 value={this.state.mNumber}
                 onChangeText={(mNumber) =>
@@ -440,7 +453,7 @@ export default class UpdateProfile extends Component {
               />
             </Item>
             <Item floatingLabel>
-              <Label>पता 1</Label>
+              <Label>{strings.address1[lang]}</Label>
               <Input
                 value={this.state.addressLine1}
                 onChangeText={(addressLine1) =>
@@ -452,7 +465,7 @@ export default class UpdateProfile extends Component {
               />
             </Item>
             <Item floatingLabel>
-              <Label>पता 2</Label>
+              <Label>{strings.address2[lang]}</Label>
               <Input
                 value={this.state.addressLine2}
                 onChangeText={(addressLine2) =>
@@ -464,7 +477,7 @@ export default class UpdateProfile extends Component {
               />
             </Item>
             <Item floatingLabel>
-              <Label>राज्य</Label>
+              <Label>{strings.state[lang]}</Label>
               <Input
                 value={this.state.uState}
                 onChangeText={(uState) =>
@@ -476,7 +489,7 @@ export default class UpdateProfile extends Component {
               />
             </Item>
             <Item floatingLabel>
-              <Label>शहर</Label>
+              <Label>{strings.city[lang]}</Label>
               <Input
                 value={this.state.uCity}
                 onChangeText={(uCity) =>
@@ -488,7 +501,7 @@ export default class UpdateProfile extends Component {
               />
             </Item>
             <Item floatingLabel>
-              <Label>बैंक का नाम</Label>
+              <Label>{strings.bank_name[lang]}</Label>
               <Input
                 value={this.state.bank_name}
                 onChangeText={(bank_name) =>
@@ -500,7 +513,7 @@ export default class UpdateProfile extends Component {
               />
             </Item>
             <Item floatingLabel>
-              <Label>खाताधारक का नाम</Label>
+              <Label>{strings.acc_holder[lang]}</Label>
               <Input
                 value={this.state.accHolderName}
                 onChangeText={(accHolderName) =>
@@ -512,7 +525,7 @@ export default class UpdateProfile extends Component {
               />
             </Item>
             <Item floatingLabel>
-              <Label>खाता संख्या</Label>
+              <Label>{strings.acc_num[lang]}</Label>
               <Input
                 value={this.state.accNumber}
                 onChangeText={(accNumber) =>
@@ -524,7 +537,7 @@ export default class UpdateProfile extends Component {
               />
             </Item>
             <Item floatingLabel>
-              <Label>IFSC कोड</Label>
+              <Label>{strings.ifsc[lang]}</Label>
               <Input
                 value={this.state.ifscCode}
                 onChangeText={(ifscCode) =>
@@ -537,7 +550,7 @@ export default class UpdateProfile extends Component {
             </Item>
             {/* <Form> */}
             <Item style={{ marginTop: 18 }} floatingLabel>
-              <Label>आधार संख्या</Label>
+              <Label>{strings.aadhar[lang]}</Label>
               <Input
                 value={this.state.aadharNumber}
                 onChangeText={(aadharNumber) =>
@@ -549,7 +562,7 @@ export default class UpdateProfile extends Component {
               />
             </Item>
             <Item style={{ marginTop: 18 }} floatingLabel>
-              <Label>पैन</Label>
+              <Label>{strings.pan[lang]}</Label>
               <Input
                 value={this.state.pan}
                 onChangeText={(pan) => this.setState({ pan, panChanged: true })}
@@ -564,7 +577,7 @@ export default class UpdateProfile extends Component {
                 size={26}
                 color="black"
               />
-              <Text>&nbsp;&nbsp;:अपनी फोटो अपलोड करें</Text>
+              <Text>&nbsp;&nbsp;:{strings.upload_photo[lang]}</Text>
               <Text>
                 &nbsp;&nbsp;
                 <Entypo name={this.state.check1} size={18} color="green" />
@@ -575,7 +588,7 @@ export default class UpdateProfile extends Component {
               style={{ flexDirection: "row", marginTop: 25 }}
             >
               <AntDesign name="idcard" size={26} color="black" />
-              <Text>&nbsp;&nbsp;:अपना आधार अपलोड करें</Text>
+              <Text>&nbsp;&nbsp;:{strings.aadhar_upload[lang]}</Text>
               <Text>
                 &nbsp;&nbsp;
                 <Entypo name={this.state.check2} size={18} color="green" />
@@ -586,7 +599,7 @@ export default class UpdateProfile extends Component {
               style={{ flexDirection: "row", marginTop: 25 }}
             >
               <AntDesign name="idcard" size={26} color="black" />
-              <Text>&nbsp;&nbsp;:अपना पैन अपलोड करें</Text>
+              <Text>&nbsp;&nbsp;:{strings.pan_upload[lang]}</Text>
               <Text>
                 &nbsp;&nbsp;
                 <Entypo name={this.state.check3} size={18} color="green" />
@@ -596,13 +609,13 @@ export default class UpdateProfile extends Component {
               show={this.state.showAlert}
               showProgress={false}
               // title=""
-              message="आप दस्तावेज़ कैसे अपलोड करेंगे?"
+              message={strings.how_document_upload[lang]}
               closeOnTouchOutside={true}
               closeOnHardwareBackPress={false}
               showCancelButton={true}
               showConfirmButton={true}
-              cancelText="कैमरा से"
-              confirmText="गैलरी से"
+              cancelText={strings.use_camera[lang]}
+              confirmText={strings.use_gallery[lang]}
               confirmButtonColor="#DD6B55"
               onCancelPressed={() => {
                 this._pickImageProfileCamera();
@@ -620,7 +633,7 @@ export default class UpdateProfile extends Component {
               style={{ backgroundColor: "#454543" }}
               onPress={this.handleSubmit}
             >
-              <Text style={{ color: "#fff" }}>अपडेट करें</Text>
+              <Text style={{ color: "#fff" }}>{strings.update[lang]}</Text>
             </Button>
           </FooterTab>
         </Footer>

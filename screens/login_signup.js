@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView, Dimensions, Image, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, ScrollView, Dimensions, Image, View, TouchableOpacity, AsyncStorage } from 'react-native';
 const { width , height} = Dimensions.get('window')
 import Login from './screen/Login'
 import SignUp from './screen/SignUp'
 import { AntDesign } from '@expo/vector-icons'
 import Constant from 'expo-constants';
-
+import { CONSTANT } from '../shared/trans';
+const strings= CONSTANT.login_singup;
 let Msg = ""
 export default class LoginSignup extends React.Component {
 componentWillMount(){
@@ -19,7 +20,8 @@ componentWillMount(){
 
     state={
         toggle:true,
-        currentView:"login"   
+        currentView:"login"   ,
+        lang:'en'
     }
 
     _onPress = (v) => {
@@ -42,6 +44,15 @@ componentWillMount(){
             
         }   
     }
+        componentDidMount() {
+          (async () => {
+            let value = await AsyncStorage.getItem('lang');
+            value = value || 'en';
+            this.setState({
+              lang: value
+            })
+          })();
+        }
   render(){
     
     //   for Login Button
@@ -68,14 +79,14 @@ componentWillMount(){
                   this._onPress("login")
                 //   this.loginData();
                   }} style={{flex:1,backgroundColor:textBG, justifyContent:"center", alignItems:"center"}}>
-                    <Text style={{fontSize:textSize, color: textcolor}}>लॉग इन</Text>
+                    <Text style={{fontSize:textSize, color: textcolor}}>{strings.login[lang]}</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={ () => 
               {
                   this._onPress("signup")
                 //   this.signUpData();
               }} style={{flex:1, backgroundColor:textBG2, justifyContent:"center", alignItems:"center"}}>
-                    <Text style={{fontSize:textSize2, color: textcolor2}}>साइन अप</Text>
+                    <Text style={{fontSize:textSize2, color: textcolor2}}>{strings.signup[lang]}</Text>
               </TouchableOpacity>
           </View>
           <View style={{height:height-100, width:width-10, paddingHorizontal:5, elevation:5, backgroundColor:"#fff"}}>

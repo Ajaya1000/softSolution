@@ -16,6 +16,8 @@ import {
   Picker,
   Form
 } from "native-base";
+import { CONSTANT } from '../shared/trans';
+const strings= CONSTANT.offer;
 let baseUrl = `https://knekisan.com/`
 
 // const items=[
@@ -105,11 +107,19 @@ export default class Offers extends React.Component {
     filtered_data: [],
     button_clicked:'All',
     ripple:false,
+    lang:'en'
   }
   componentDidMount() {
     console.log('offer props are');
     console.log(this.props);
     this.init();
+    (async () => {
+      let value = await AsyncStorage.getItem('lang');
+      value = value || 'en';
+      this.setState({
+        lang: value
+      })
+    })();
   }
   async init() {
     let userId = await AsyncStorage.getItem('user')
@@ -167,6 +177,7 @@ export default class Offers extends React.Component {
 
 
   renderStatus = (status) => {
+    let lang= this.state.lang;
     if (status == 'Pending') {
       return <Text style={{ color: 'gold' }}>विचाराधीन</Text>
       // return <FontAwesome5 name="stopwatch" size={24} color="gold" />
@@ -232,7 +243,8 @@ export default class Offers extends React.Component {
       return '#7FFF0011'
   }
   render() {
-    const {button_clicked,data}=this.state;
+    const {button_clicked,data,lang}=this.state;
+
     let show_detail;
     let filtered_data;
     if(button_clicked==='All')
@@ -278,10 +290,10 @@ export default class Offers extends React.Component {
                   }
                 } >
                   { (item.product && item.product.name) && (<Text style={styles.subtitle}>उत्पाद: {item.product.name}</Text>)}
-                <Text style={styles.subtitle}>बोरी : {item.bori}</Text>
-                <Text style={styles.subtitle}>चालक : {item.driver}</Text>
-                <Text style={styles.subtitle}>गाडी नंबर : {item.vehicleNo}</Text>
-                <Text style={styles.subtitle}>वजन :  {item.weight}</Text>
+                <Text style={styles.subtitle}>{strings.bori[lang]} : {item.bori}</Text>
+                <Text style={styles.subtitle}>{strings.driver[lang]} : {item.driver}</Text>
+                <Text style={styles.subtitle}>{strings.vehicle_num[lang]} : {item.vehicleNo}</Text>
+                <Text style={styles.subtitle}>{strings.weight[lang]} :  {item.weight}</Text>
 
                 {/* {(item.paymentDue)&&(<Text style={styles.subtitle}> भुगतान राशि :  {item.paymentDue}</Text>)}
                 {
@@ -316,7 +328,7 @@ export default class Offers extends React.Component {
             && this.state.button_clicked=="Approved"){
       show_detail = (
         <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-          <Text style={{fontSize:18}}>आपके पास कोई अनुमोदित जांच नहीं है</Text>
+          <Text style={{fontSize:18}}>{strings.no_approve[lang]}</Text>
         </View>
       )
     }
@@ -325,7 +337,7 @@ export default class Offers extends React.Component {
             && this.state.button_clicked=="Pending"){
       show_detail = (
         <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-          <Text style={{fontSize:18}}>आपके पास कोई जांच लंबित नहीं है</Text>
+          <Text style={{fontSize:18}}>{strings.no_pending[lang]}</Text>
         </View>
       )
     }
@@ -334,14 +346,14 @@ export default class Offers extends React.Component {
             && this.state.button_clicked=="Declined"){
       show_detail = (
       <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-      <Text style={{fontSize:18}}>आपके पास कोई अस्वीकृत जांच नहीं है</Text>
+      <Text style={{fontSize:18}}>{strings.no_declined[lang]}</Text>
       </View>
       )
       }
     else{
       show_detail = (
         <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-          <Text style={{fontSize:18}}>उपरोक्त पूछताछ की जाँच करें</Text>
+          <Text style={{fontSize:18}}>{strings.inquery[lang]}</Text>
         </View>
       )
     }
@@ -359,7 +371,7 @@ export default class Offers extends React.Component {
             <Picker
               mode="dropdown"
               iosIcon={<Icon name="arrow-down" />}
-              placeholder = "फ़िल्टर का चयन करें"
+              placeholder = {strings.filter_select[lang]}
               placeholderStyle={{ color: "#bfc6ea" }}
               placeholderIconColor="#007aff"
               
@@ -374,12 +386,12 @@ export default class Offers extends React.Component {
                }
               }
             >
-              <Picker.Item label="सब" value="All" />
-              <Picker.Item label="अनुमोदित" value="Approved" />
-              <Picker.Item label="विचाराधीन" value="Pending" />
-              < Picker.Item label = "अस्वीकृत" value = "Declined" / >
-              <Picker.Item label="भुगतान प्राप्त" value="PaymentRecieved" />
-              <Picker.Item label="प्राप्त मात्रा" value="QauntityRecieved" />
+              <Picker.Item label={strings.all[lang]} value="All" />
+              <Picker.Item label={strings.approve[lang]} value="Approved" />
+              <Picker.Item label={strings.pending[lang]} value="Pending" />
+              < Picker.Item label = {strings.declined[lang]} value = "Declined" / >
+              <Picker.Item label={strings.p_recieved[lang]} value="PaymentRecieved" />
+              <Picker.Item label={strings.q_recieved[lang]} value="QauntityRecieved" />
             </Picker>
           </Form>
         {/* <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>

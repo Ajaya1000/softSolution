@@ -32,8 +32,9 @@ import timerStart,{notify} from "./notificationManager/timer";
 import * as TaskManager from "expo-task-manager";
 import { registerForPushNotificationsAsync } from "./notificationManager";
 import * as BackgroundFetch from "expo-background-fetch";
+import { CONSTANT } from "./shared/trans";
 const NOTIFICATION = "NOTIFICATION";
-
+const strings= CONSTANT.app;
 TaskManager.defineTask(NOTIFICATION, async () => {
   console.log('inside manager')
   try {
@@ -53,9 +54,20 @@ class LoginCheck extends React.Component {
 
     this.state = {
       username: null,
-      token: null
+      token: null,
+      lang:'en'
     };
   }
+  componentDidMount() {
+    (async () => {
+      let value = await AsyncStorage.getItem('lang');
+      value = value || 'en';
+      this.setState({
+        lang: value
+      })
+    })();
+  }
+
   componentWillMount() {
     console.log("App mount");
     this._checkLocalStorage();
@@ -82,6 +94,7 @@ class LoginCheck extends React.Component {
   };
 
   render() {
+    let lang= this.state.lang;
     this._checkLocalStorage();
     let BeforeLogin = (
       <View
@@ -105,7 +118,7 @@ class LoginCheck extends React.Component {
             borderColor: "#fff",
           }}
         >
-          <Text style={{ fontSize: 14, color: "#fff" }}>लॉग इन</Text>
+          <Text style={{ fontSize: 14, color: "#fff" }}>{strings.login[lang]}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => this.props.nav.navigate("LoginSignup")}
@@ -119,7 +132,7 @@ class LoginCheck extends React.Component {
             borderColor: "#fff",
           }}
         >
-          <Text style={{ fontSize: 14, color: "#fff" }}>साइन अप</Text>
+          <Text style={{ fontSize: 14, color: "#fff" }}>{strings.signup[lang]}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -138,7 +151,7 @@ class LoginCheck extends React.Component {
             AsyncStorage.removeItem("username")
               .then(() => {
                 this._checkLocalStorage();
-                Alert.alert("लॉग आउट किया");
+                Alert.alert(strings.logoutdone[lang]);
               })
               .catch((e) => console.log("logout error : " + e));
           }}
@@ -152,7 +165,7 @@ class LoginCheck extends React.Component {
             borderColor: "#fff",
           }}
         >
-          <Text style={{ fontSize: 14, color: "#fff" }}>लॉग आउट</Text>
+          <Text style={{ fontSize: 14, color: "#fff" }}>{strings.logout[lang]}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -165,6 +178,14 @@ class LoginCheck extends React.Component {
 }
 
 const HomeStack = () => {
+   const [lang, setlang] = useState('en');
+   useEffect(() => {
+     (async () => {
+       let value = await AsyncStorage.getItem('lang');
+       value = value || 'en';
+       setlang(value);
+     })();
+   }, [])
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -207,7 +228,7 @@ const HomeStack = () => {
         name="Profile"
         component={Profile}
         options={{
-          headerTitle: "मेरी प्रोफाइल",
+          headerTitle: strings.myprofile[lang],
           headerStyle: {
             backgroundColor: "#76BA1B",
           },
@@ -219,7 +240,7 @@ const HomeStack = () => {
         name="UpdateProfile"
         component={UpdateProfile}
         options={{
-          headerTitle: "प्रोफ़ाइल अपडेट करें",
+          headerTitle: strings.update_profile[lang],
           headerStyle: {
             backgroundColor: "#76BA1B",
           },
@@ -239,6 +260,14 @@ const HomeStack = () => {
   );
 };
 const OfferStack = () => {
+     const [lang, setlang] = useState('en');
+     useEffect(() => {
+       (async () => {
+         let value = await AsyncStorage.getItem('lang');
+         value = value || 'en';
+         setlang(value);
+       })();
+     }, [])
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -250,7 +279,7 @@ const OfferStack = () => {
         name="OfferDetails"
         component={OfferDetails}
         options={{
-          headerTitle: "पूछताछ विवरण",
+          headerTitle: strings.offer_detail[lang],
           headerStyle: {
             backgroundColor: "#76BA1B",
           },
@@ -268,10 +297,18 @@ const tabBarStyle = {
 };
 
 const HomeTab = () => {
+  const [lang, setlang] = useState('en');
+  useEffect(() => {
+    (async () => {
+      let value = await AsyncStorage.getItem('lang');
+      value = value || 'en';
+      setlang(value);
+    })();
+  }, [])
   return (
     <Tab.Navigator tabBarOptions={tabBarStyle}>
       <Tab.Screen
-        name="घर"
+        name={strings.home[lang]}
         component={HomeStack}
         options={{
           tabBarIcon: () => <Entypo name="home" size={24} color="black" />,
@@ -285,7 +322,7 @@ const HomeTab = () => {
                     }}
           /> */}
       <Tab.Screen
-        name="खोज"
+        name={strings.search[lang]}
         component={Search}
         options={{
           tabBarIcon: () => (
@@ -294,7 +331,7 @@ const HomeTab = () => {
         }}
       />
       <Tab.Screen
-        name="जांच"
+        name={strings.info[lang]}
         component={OfferStack}
         options={{
           tabBarIcon: () => <Foundation name="info" size={28} color="black" />,

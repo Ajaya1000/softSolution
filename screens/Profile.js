@@ -28,7 +28,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { AsyncStorage } from "react-native";
 import { Modal } from "react-native-paper";
 import { Lightbox } from "react-modal-image";
+import { CONSTANT } from "../shared/trans";
 const { width, height } = Dimensions.get("window");
+const strings= CONSTANT.profile;
 
 export default class CardImageExample extends Component {
   constructor(props) {
@@ -43,6 +45,7 @@ export default class CardImageExample extends Component {
       panModal: false,
       imageAadhar: null,
       imagePan: null,
+      lang:'en'
     };
   }
   componentWillMount() {
@@ -98,6 +101,13 @@ export default class CardImageExample extends Component {
         console.log(error);
       }
     })();
+    (async () => {
+      let value = await AsyncStorage.getItem('lang');
+      value = value || 'en';
+      this.setState({
+        lang: value
+      })
+    })();
   }
 
   _checklogin = async () => {
@@ -109,6 +119,7 @@ export default class CardImageExample extends Component {
   };
 
   render() {
+    const {lang} = this.state;
     return (
       <Container>
         {/* <View>
@@ -267,7 +278,7 @@ export default class CardImageExample extends Component {
                 style={{ flexDirection: "row", marginTop: 25 }}
               >
                 <AntDesign name="idcard" size={26} color="black" />
-                <Text>&nbsp;&nbsp;:अपना आधार अपलोड dekhe</Text>
+                <Text>&nbsp;&nbsp;:{strings.see_aadhar[lang]}</Text>
                 <Text>
                   &nbsp;&nbsp;
                   <Entypo name={this.state.check2} size={18} color="green" />
@@ -282,7 +293,7 @@ export default class CardImageExample extends Component {
                 style={{ flexDirection: "row", marginTop: 25 }}
               >
                 <AntDesign name="idcard" size={26} color="black" />
-                <Text>&nbsp;&nbsp;:अपना pan अपलोड dekhe</Text>
+                <Text>&nbsp;&nbsp;:{strings.see_pan[lang]}</Text>
                 <Text>
                   &nbsp;&nbsp;
                   <Entypo name={this.state.check3} size={18} color="green" />
@@ -298,7 +309,7 @@ export default class CardImageExample extends Component {
                   );
                 }}
               >
-                <Text> &nbsp;लॉग आउट</Text>
+                <Text> &nbsp;{strings.logout[lang]}</Text>
               </TouchableOpacity>
             </ListItem>
           </List>

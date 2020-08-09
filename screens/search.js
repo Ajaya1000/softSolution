@@ -1,14 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, ScrollView, Dimensions, Image, View,TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TextInput, ScrollView, Dimensions, Image, View,TouchableOpacity, AsyncStorage } from 'react-native';
 // import Search_Header from "../components/Search_Header";
 import {Ionicons, Feather, EvilIcons, MaterialCommunityIcons} from '@expo/vector-icons';
 import Constant from 'expo-constants';
 
 import { Card,Button,Item,Label,Input } from "native-base";
 import axios from "axios";
+import { CONSTANT } from '../shared/trans';
 const { width , height} = Dimensions.get('window')
 let baseUrl =`https://knekisan.com/`
-
+const strings= CONSTANT.search;
 export default class Basket extends React.Component {
   constructor(props) {
   super(props);
@@ -16,13 +17,22 @@ export default class Basket extends React.Component {
   this.state = {
     products:[],
     searchtext:"",
-    search_product:[]
+    search_product:[],
+    lang:"en"
   };
    }
   componentWillMount(){
     this.getProducts();
   }
-
+  componentDidMount() {
+    (async () => {
+      let value = await AsyncStorage.getItem('lang');
+      value = value || 'en';
+      this.setState({
+        lang: value
+      })
+    })();
+  }
   setResult = data => {
     console.log(data)
     this.setState({
@@ -68,6 +78,7 @@ updateSearch = searchtext => {
         
     }   
   render(){
+    let lang = this.state.lang;
     let _productList = this.state.products.filter((status)=> status.status === 'Active').map(obj=>
       <TouchableOpacity
       onPress={()=>{
@@ -124,7 +135,7 @@ updateSearch = searchtext => {
                 <Ionicons name="ios-arrow-back" size={30} color="white" />
             </TouchableOpacity>
              <View>
-                 <Text style={{color:"#fff", fontSize:18}}>उत्पादों को खोजना</Text>
+                 <Text style={{color:"#fff", fontSize:18}}>{strings.search_product[lang]}</Text>
              </View>
              <View >
                  <MaterialCommunityIcons name="barcode-scan" size={24} color="#fff" />
