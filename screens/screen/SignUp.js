@@ -47,7 +47,7 @@ export default class signUp extends React.Component {
       pavati: "",
       addressLine1: "",
       addressLine2: "",
-      uState: "",
+      uState: "Madhyapradesh",
       uCity: "",
       check1: null,
       check2: null,
@@ -112,8 +112,8 @@ export default class signUp extends React.Component {
         const data = new FormData();
         data.append("file", newFile);
         data.append("upload_preset", "UserProfile");
-        data.append("cloud_name", "dd0txohwe");
-        fetch("https://api.cloudinary.com/v1_1/dd0txohwe/image/upload", {
+        data.append("cloud_name", "dr69sjoge");
+        fetch("https://api.cloudinary.com/v1_1/dr69sjoge/image/upload", {
           method: "POST",
           body: data,
         })
@@ -589,7 +589,7 @@ export default class signUp extends React.Component {
                   onChangeText={(uCity) => this.setState({ uCity })}
                 />
               </Item>
-              <Item bbbbbbbbbbbbb style={{ marginTop: 18 }} floatingLabel>
+              {/* <Item bbbbbbbbbbbbb style={{ marginTop: 18 }} floatingLabel>
                 <Label>{strings.state[lang]}</Label>
                 <Input
                   value={this.state.uState}
@@ -598,7 +598,7 @@ export default class signUp extends React.Component {
                   keyboardType="default"
                   onChangeText={(uState) => this.setState({ uState })}
                 />
-              </Item>
+              </Item> */}
             </ScrollView>
             {/* </Form> */}
           </View>

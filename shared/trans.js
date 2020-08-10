@@ -119,7 +119,7 @@ export const CONSTANT = {
     },
     password: {
       en: "password",
-      hi: "कुंजिका",
+      hi: "कुंजिका/password",
     },
   },
   signup: {
@@ -161,7 +161,7 @@ export const CONSTANT = {
     },
     password: {
       en: "password",
-      hi: "कुंजिका",
+      hi: "कुंजिका/password",
     },
     mobile: {
       en: "Mobile Number",

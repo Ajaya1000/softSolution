@@ -491,9 +491,8 @@ export default class Product_Description extends React.Component {
                                                 <Button
                                                     disabled={
                                                         this.state.bori &&
-                                                            this.state.weight &&
-                                                            this.state.vehicleNo &&
-                                                            this.state.driver ? false : true
+                                                            this.state.weight 
+                                                           ? false : true
                                                     }
 
                                                     onPress={() => {

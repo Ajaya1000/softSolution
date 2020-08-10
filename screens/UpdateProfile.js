@@ -366,8 +366,8 @@ export default class UpdateProfile extends Component {
         const data = new FormData();
         data.append("file", newFile);
         data.append("upload_preset", "UserProfile");
-        data.append("cloud_name", "dd0txohwe");
-        fetch("https://api.cloudinary.com/v1_1/dd0txohwe/image/upload", {
+        data.append("cloud_name", "dr69sjoge");
+        fetch("https://api.cloudinary.com/v1_1/dr69sjoge/image/upload", {
           method: "POST",
           body: data,
         })

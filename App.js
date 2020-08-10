@@ -365,7 +365,12 @@ const Drawer = createDrawerNavigator();
 export default function App() {
   const [lang, setLang, clearLang] = useAsyncStorage("lang");
   const [checked, setChecked] = useState(true);
-  useEffect(() => {
+  useEffect(async () => {
+    console.log("useEffect called");
+    console.log("language is", lang);
+    if (!lang) {
+      let v = AsyncStorage.getItem("lang");
+    }
     if (lang === "hi") {
       setChecked(false);
     } else setChecked(true);
