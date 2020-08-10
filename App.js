@@ -7,6 +7,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import useAsyncStorage from "@rnhooks/async-storage";
+import { Restart } from "fiction-expo-restart";
 import {
   EvilIcons,
   Entypo,
@@ -48,32 +49,35 @@ TaskManager.defineTask(NOTIFICATION, async () => {
   }
 });
 const Stack = createStackNavigator();
-class LoginCheck extends React.Component {
-  constructor(props) {
-    super(props);
+function LoginCheck(props) {
+  const [lang, setLang, clearLang] = useAsyncStorage("lang");
+  const [username, setusername] = useState("");
+  const [token, settoken] = useState("");
+  // constructor(props) {
+  //   super(props);
 
-    this.state = {
-      username: null,
-      token: null,
-      lang: "en",
-    };
-  }
-  componentDidMount() {
-    (async () => {
-      let value = await AsyncStorage.getItem("lang");
-      value = value || "en";
-      this.setState({
-        lang: value,
-      });
-    })();
-  }
+  //   this.state = {
+  //     username: null,
+  //     token: null,
+  //     lang: "en",
+  //   };
+  // }
+  // componentDidMount() {
+  //   (async () => {
+  //     let value = await AsyncStorage.getItem("lang");
+  //     value = value || "en";
+  //     this.setState({
+  //       lang: value,
+  //     });
+  //   })();
+  // }
 
-  componentWillMount() {
+  useEffect(() => {
     console.log("App mount");
-    this._checkLocalStorage();
-    this.initializeToken();
-  }
-  initializeToken = async () => {
+    _checkLocalStorage();
+    initializeToken();
+  }, []);
+  const initializeToken = async () => {
     // let token = await AsyncStorage.getItem("token");
     console.log("Token initialization called");
     let token;
@@ -86,15 +90,15 @@ class LoginCheck extends React.Component {
 
     timerStart();
   };
-  _checkLocalStorage = async () => {
+  const _checkLocalStorage = async () => {
     let username = await AsyncStorage.getItem("username");
 
-    this.setState({ username });
+    setusername(username);
   };
 
-  render() {
-    let lang = this.state.lang;
-    this._checkLocalStorage();
+  const render = () => {
+    // let lang = this.state.lang;
+    _checkLocalStorage();
     let BeforeLogin = (
       <View
         style={{
@@ -106,7 +110,7 @@ class LoginCheck extends React.Component {
         }}
       >
         <TouchableOpacity
-          onPress={() => this.props.nav.navigate("LoginSignup")}
+          onPress={() => props.nav.navigate("LoginSignup")}
           activeOpacity={0.8}
           style={{
             alignItems: "center",
@@ -118,11 +122,11 @@ class LoginCheck extends React.Component {
           }}
         >
           <Text style={{ fontSize: 14, color: "#fff" }}>
-            {strings.login[lang]}
+            {strings.login[lang || "en"]}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => this.props.nav.navigate("LoginSignup")}
+          onPress={() => props.nav.navigate("LoginSignup")}
           activeOpacity={0.8}
           style={{
             alignItems: "center",
@@ -134,7 +138,7 @@ class LoginCheck extends React.Component {
           }}
         >
           <Text style={{ fontSize: 14, color: "#fff" }}>
-            {strings.signup[lang]}
+            {strings.signup[lang || "en"]}
           </Text>
         </TouchableOpacity>
       </View>
@@ -153,8 +157,8 @@ class LoginCheck extends React.Component {
           onPress={() => {
             AsyncStorage.removeItem("username")
               .then(() => {
-                this._checkLocalStorage();
-                Alert.alert(strings.logoutdone[lang]);
+                _checkLocalStorage();
+                Alert.alert(strings.logoutdone[lang || "en"]);
               })
               .catch((e) => console.log("logout error : " + e));
           }}
@@ -169,29 +173,30 @@ class LoginCheck extends React.Component {
           }}
         >
           <Text style={{ fontSize: 14, color: "#fff" }}>
-            {strings.logout[lang]}
+            {strings.logout[lang || "en"]}
           </Text>
         </TouchableOpacity>
       </View>
     );
-    if (this.state.username !== null) {
+    if (username !== null) {
       return AfterLogin;
     } else {
       return BeforeLogin;
     }
-  }
+  };
+  return render();
 }
 
 const HomeStack = () => {
   // useEffect
-  const [lang, setlang] = useState("en");
-  useEffect(() => {
-    (async () => {
-      let value = await AsyncStorage.getItem("lang");
-      value = value || "en";
-      setlang(value);
-    })();
-  }, []);
+  const [lang, setLang, clearLang] = useAsyncStorage("lang");
+  // useEffect(() => {
+  //   (async () => {
+  //     let value = await AsyncStorage.getItem("lang");
+  //     value = value || "en";
+  //     setlang(value);
+  //   })();
+  // }, []);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -234,7 +239,7 @@ const HomeStack = () => {
         name="Profile"
         component={Profile}
         options={{
-          headerTitle: strings.myprofile[lang],
+          headerTitle: strings.myprofile[lang || "en"],
           headerStyle: {
             backgroundColor: "#76BA1B",
           },
@@ -246,7 +251,7 @@ const HomeStack = () => {
         name="UpdateProfile"
         component={UpdateProfile}
         options={{
-          headerTitle: strings.update_profile[lang],
+          headerTitle: strings.update_profile[lang || "en"],
           headerStyle: {
             backgroundColor: "#76BA1B",
           },
@@ -266,14 +271,14 @@ const HomeStack = () => {
   );
 };
 const OfferStack = () => {
-  const [lang, setlang] = useState("en");
-  useEffect(() => {
-    (async () => {
-      let value = await AsyncStorage.getItem("lang");
-      value = value || "en";
-      setlang(value);
-    })();
-  }, []);
+  const [lang, setLang, clearLang] = useAsyncStorage("lang");
+  // useEffect(() => {
+  //   (async () => {
+  //     let value = await AsyncStorage.getItem("lang");
+  //     value = value || "en";
+  //     setlang(value);
+  //   })();
+  // }, []);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -285,7 +290,7 @@ const OfferStack = () => {
         name="OfferDetails"
         component={OfferDetails}
         options={{
-          headerTitle: strings.offer_detail[lang],
+          headerTitle: strings.offer_detail[lang || "en"],
           headerStyle: {
             backgroundColor: "#76BA1B",
           },
@@ -304,18 +309,18 @@ const tabBarStyle = {
 
 const HomeTab = () => {
   console.log("Hometab called");
-  const [lang, setlang] = useState("en");
-  useEffect(() => {
-    (async () => {
-      let value = await AsyncStorage.getItem("lang");
-      value = value || "en";
-      setlang(value);
-    })();
-  }, []);
+  const [lang, setLang, clearLang] = useAsyncStorage("lang");
+  // useEffect(() => {
+  //   (async () => {
+  //     let value = await AsyncStorage.getItem("lang");
+  //     value = value || "en";
+  //     setlang(value);
+  //   })();
+  // }, []);
   return (
     <Tab.Navigator tabBarOptions={tabBarStyle}>
       <Tab.Screen
-        name={strings.home[lang]}
+        name={strings.home[lang || "en"]}
         component={HomeStack}
         options={{
           tabBarIcon: () => <Entypo name="home" size={24} color="black" />,
@@ -329,7 +334,7 @@ const HomeTab = () => {
                     }}
           /> */}
       <Tab.Screen
-        name={strings.search[lang]}
+        name={strings.search[lang || "en"]}
         component={Search}
         options={{
           tabBarIcon: () => (
@@ -338,7 +343,7 @@ const HomeTab = () => {
         }}
       />
       <Tab.Screen
-        name={strings.info[lang]}
+        name={strings.info[lang || "en"]}
         component={OfferStack}
         options={{
           tabBarIcon: () => <Foundation name="info" size={28} color="black" />,
@@ -360,16 +365,27 @@ const Drawer = createDrawerNavigator();
 export default function App() {
   const [lang, setLang, clearLang] = useAsyncStorage("lang");
   const [checked, setChecked] = useState(true);
+  useEffect(() => {
+    if (lang === "hi") {
+      setChecked(false);
+    } else setChecked(true);
+  }, []);
   toggleLang = async () => {
     console.log("toogleLang is called");
     const b = checked;
-    setChecked(!b);
+    // console.log(b);
+
+    // console.log(b);
     await setLang(b ? "hi" : "en");
+    console.log("language updated");
+    setChecked(!b);
+    Restart();
     // console.log(isEn;
     // this.setState({
     //   lang:!isEn
     // })
     // console.log(this.state.lang);
+    console.log("language is", lang);
   };
   const CustomDrawer = (props) => {
     return (
@@ -384,30 +400,6 @@ export default function App() {
           }}
         ></View>
         <LoginCheck nav={props.navigation} />
-        {/* <View style={{marginTop:5, paddingLeft:10, backgroundColor:'#fff', flexDirection:'row', height:60, alignItems:'center', justifyContent:'space-around'}}>
-        <EvilIcons name="location" size={22} color="black" />
-        <Text style={{fontSize:15}}>560004, Bangalore - 560004</Text>
-        <Feather name="edit-2" size={20} color="#4CBB17" style={{marginLeft:15}} />
-      </View>
-      <View style={{marginTop:1, paddingHorizontal:20, paddingVertical:10, backgroundColor:'#fff'}}>
-        <Text style={{fontSize:14}}>Your next available slot</Text>
-        <View style={{flexDirection:'row', marginTop:15}}>
-          <Image  style={{height:15,width:20}}
-                  source={require('./assets/motorcycle.png')}
-          />
-          <Text style={{fontSize:13}}>   Tomorrow 6:30AM -8:30AM</Text>
-        </View>
-        <View style={{flexDirection:'row', marginTop:10}}>
-          <Image  style={{height:15,width:20}}
-                  source={require('./assets/truck.png')}
-          />
-          <Text style={{fontSize:13}}>   Tomorrow 6:30AM -8:30AM</Text>
-        </View>
-      </View> */}
-        {/* <View style={{flexDirection:'row', height:60, backgroundColor:'#d0f0c0', justifyContent:'space-around', alignItems:'center'}}>
-        <Text style={{fontSize:13, color:'green', width:200}}>Get Priority slots with bbstar memebership</Text>
-        <AntDesign name="caretright" size={18} color="green" />
-      </View> */}
         <ScrollView
           style={{
             marginTop: 5,
@@ -444,29 +436,33 @@ export default function App() {
       </View>
     );
   };
+  const render = () => {
+    console.log("render called");
+    console.log("from render", lang);
+    // console.log(useAsyncStorage);
+    return (
+      <NavigationContainer>
+        <Drawer.Navigator
+          initialRouteName="Home"
+          // lang={this.state.lang}
+          // toggleLang= {this.toggleLang}
+          drawerContent={(props) => CustomDrawer(props)}
+        >
+          <Drawer.Screen name="Home" component={HomeTab} />
+          <Drawer.Screen name="LoginSignup" component={LoginSignup} />
+          <Drawer.Screen name="Category" component={Category} />
+          <Drawer.Screen name="Offers" component={Offers} />
+          {/* <Drawer.Screen name="OfferDetails" component={OfferDetails} /> */}
+          {/* <Drawer.Screen name="Basket" component={Basket} /> */}
+        </Drawer.Navigator>
+      </NavigationContainer>
 
-  // console.log("render called");
-  return (
-    <NavigationContainer>
-      <Drawer.Navigator
-        initialRouteName="Home"
-        // lang={this.state.lang}
-        // toggleLang= {this.toggleLang}
-        drawerContent={(props) => CustomDrawer(props)}
-      >
-        <Drawer.Screen name="Home" component={HomeTab} />
-        <Drawer.Screen name="LoginSignup" component={LoginSignup} />
-        <Drawer.Screen name="Category" component={Category} />
-        <Drawer.Screen name="Offers" component={Offers} />
-        {/* <Drawer.Screen name="OfferDetails" component={OfferDetails} /> */}
-        {/* <Drawer.Screen name="Basket" component={Basket} /> */}
-      </Drawer.Navigator>
-    </NavigationContainer>
-
-    // <View style={{flex:1}}>
-    //   {/* <Home/> */}
-    //   {/* <Category/> */}
-    //   <Offers/>
-    // </View>
-  );
+      // <View style={{flex:1}}>
+      //   {/* <Home/> */}
+      //   {/* <Category/> */}
+      //   <Offers/>
+      // </View>
+    );
+  };
+  return render();
 }

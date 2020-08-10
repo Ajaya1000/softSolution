@@ -5,6 +5,7 @@ import { registerForPushNotificationsAsync, sendPushNotification } from ".";
 import * as TaskManager from "expo-task-manager";
 import { CONSTANT } from "../shared/trans";
 // var timerId;
+// import useAsyncStorage from "@rnhooks/async-storage";
 const strings=CONSTANT.timer;
 var data = [];
 var makeRemoteRequest = async (userId) => {
@@ -21,8 +22,6 @@ var makeRemoteRequest = async (userId) => {
     // console.log('inside makeRemoteRequest new Data is ',newData);
   return newData;
 };
-
-
 export var notify = async () => {
   console.log("\n\n\n notify started\n\n\n")
   //olddata

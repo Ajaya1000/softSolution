@@ -1,28 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, TextInput, Text, View, Dimensions } from 'react-native';
 import {FontAwesome5, Feather,EvilIcons,MaterialIcons} from '@expo/vector-icons';
 import Constant from 'expo-constants';
 import { CONSTANT } from '../shared/trans';
 import { AsyncStorage } from 'react-native';
+import useAsyncStorage from "@rnhooks/async-storage";
 const { width } = Dimensions.get('window')
 const mycolor = "#212121" 
 const strings = CONSTANT.h2;
-export default class Header2 extends React.Component {
-    state={
-        searchtext:"",
-        lang:'en'
-    }
-    componentDidMount() {
-        (async () => {
-            let value = await AsyncStorage.getItem('lang');
-            value = value || 'en';
-            this.setState({
-                lang: value
-            })
-        })();
-    }
-  render(){
-      lang=this.state.lang;
+export default function Header2 () {
+    const [searchtext, setsearchtext] = useState("");
+    const [lang,setlang,clearlang] = useAsyncStorage("lang");
+    // state={
+    //     searchtext:"",
+    //     lang:'en'
+    // }
+    // componentDidMount() {
+    //     (async () => {
+    //         let value = await AsyncStorage.getItem('lang');
+    //         value = value || 'en';
+    //         this.setState({
+    //             lang: value
+    //         })
+    //     })();
+    // }
+//   render(){
+//       lang=this.state.lang;
     return (
         <View style={{
             paddingTop:Constant.statusBarHeight,
@@ -45,7 +48,7 @@ export default class Header2 extends React.Component {
           }}>
              <Feather name="menu" size={30} color="white" />
              <View>
-        <Text style={{color:"#fff", fontSize:20}}>{strings.class[lang]}</Text>
+        <Text style={{color:"#fff", fontSize:20}}>{strings.class[lang || 'en']}</Text>
              </View>
              <View></View>
           </View>
@@ -57,15 +60,16 @@ export default class Header2 extends React.Component {
                         fontSize: 17,
                         color: "#010101",
                         backgroundColor: "#fff",
-                        paddingHorizontal:15}}
-                        autoCapitalize="none"
-                        placeholder={strings.search[lang]}
-                        onChangeText={searchtext => this.setState({ searchtext })}
-                        value={this.state.searchtext}
+                        paddingHorizontal:15
+                    }}
+                    autoCapitalize="none"
+                    placeholder={strings.search[lang || 'en']}
+                    onChangeText={searchtext =>setsearchtext( searchtext)}
+                    value={searchtext}
                 ></TextInput>
                 <EvilIcons name="search" size={28} color="#A9A9A9" style={{marginTop:5, marginLeft:-13}} />
              </View>
         </View>
       );
-  }
+//   }
 }

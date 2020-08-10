@@ -5,7 +5,7 @@ import Constant from 'expo-constants';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AsyncStorage } from 'react-native';
 import { CONSTANT } from '../shared/trans';
-
+import useAsyncStorage from "@rnhooks/async-storage";
 const { width } = Dimensions.get('window')
 const mycolor = "#212121" 
 
@@ -15,40 +15,43 @@ const mycolor = "#212121"
     
 //   }
 const strings= CONSTANT.hc;
-export class Header extends React.Component{
-    constructor(props) {
-        super(props);
+export function Header (props){
+    // constructor(props) {
+    //     super(props);
          
-        this.state = {
-            username: null,
-            lang:'en'
-        };
-         }
+    //     this.state = {
+    //         username: null,
+    //         lang:'en'
+    //     };
+    //      }
+    const [lang,setlang,clearlang] = useAsyncStorage("lang");
+    const [username, setusername, clearusername] = useAsyncStorage("username");
 
-    componentDidMount(){
-        this._checklogin();
-         (async () => {
-             let value = await AsyncStorage.getItem('lang');
-             value = value || 'en';
-             this.setState({
-                 lang: value
-             })
-         })();
-    }
-    _checklogin = async () =>{
-        let test= await AsyncStorage.getItem('username')
-        // console.log('test\n\n\n\n\n\n\n\n\n :'+JSON.stringify(test));
-        this.setState({
-            username:test
-        }) 
-    }
-    render() {
-        this._checklogin();
-        lang= this.state.lang;
+    // componentDidMount(){
+    //     this._checklogin();
+    //      (async () => {
+    //          let value = await AsyncStorage.getItem('lang');
+    //          value = value || 'en';
+    //          this.setState({
+    //              lang: value
+    //          })
+    //      })();
+    // }
+
+    // _checklogin = async () =>{
+    //     let test= await AsyncStorage.getItem('username')
+    //     // console.log('test\n\n\n\n\n\n\n\n\n :'+JSON.stringify(test));
+    //     this.setState({
+    //         username:test
+    //     }) 
+    // }
+    const render=()=> {
+        // this._checklogin();
+        // lang= this.state.lang;
         let Id = null
         let msg = null
-        if (this.state.username !==null) {
-            Id = this.state.username
+        if (username !==null) {
+            Id = username
             msg =strings.cong[lang]
         }
         else{
@@ -72,7 +75,7 @@ export class Header extends React.Component{
                   width:width-20,
                   justifyContent:"space-between",
               }}>
-                <TouchableOpacity onPress={() => this.props.navigation.openDrawer()}>
+                <TouchableOpacity onPress={() => props.navigation.openDrawer()}>
                     <Feather name="menu" size={30} color="white" />
                 </TouchableOpacity>
                  
@@ -81,13 +84,13 @@ export class Header extends React.Component{
                      {/* <Text style={{color:"#fff"}}>{Id}</Text> */}
                  </View>
                  <TouchableOpacity
-                 onPress={()=>this.state.username !== null ? 
-                 this.props.navigation.navigate("Profile") : this.props.navigation.navigate("LoginSignup")
+                 onPress={()=>username !== null ? 
+                 props.navigation.navigate("Profile") : props.navigation.navigate("LoginSignup")
                  }
                  ><FontAwesome5 name="user-circle" size={30} color="white" /></TouchableOpacity>
               </View>
               <View style={{flexDirection:"row" ,height: 35, width:width-30, backgroundColor: "#fff", borderRadius:5, marginHorizontal:15}}>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Search')}
+                    <TouchableOpacity onPress={() => props.navigation.navigate('Search')}
                         style={{
                             height: 35,
                             width:width-50,
@@ -99,18 +102,20 @@ export class Header extends React.Component{
                             justifyContent:'center'
                         }}
                     >
-                        <Text style={{fontSize:17, color:'grey'}}>खोज</Text>
+                        <Text style={{fontSize:17, color:'grey'}}>{strings.search[lang || 'en']}</Text>
                     </TouchableOpacity>
                     <EvilIcons name="search" size={28} color="#A9A9A9" style={{marginTop:5, marginLeft:-13}} />
                  </View>
             </View>
           );
     }
+    return render();
 }
 
 
 
 export const Header2 = (props) => {
+    const [lang, setlang, clearlang] = useAsyncStorage("lang");
     return (
         <View style={{
             paddingTop:Constant.statusBarHeight,
@@ -149,7 +154,7 @@ export const Header2 = (props) => {
                         justifyContent:'center'
                     }}
                 >
-                    <Text style={{fontSize:17, color:'grey'}}>खोज</Text>
+                    <Text style={{fontSize:17, color:'grey'}}>{strings.search[lang || 'en']}</Text>
                 </TouchableOpacity>
                 <EvilIcons name="search" size={28} color="#A9A9A9" style={{marginTop:5, marginLeft:-13}} />
              </View>

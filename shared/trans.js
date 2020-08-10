@@ -19,6 +19,10 @@ export const CONSTANT = {
       en: "Welcome : ",
       hi: "स्वागत हे : ",
     },
+    search: {
+      en: "Search ",
+      hi: "खोज ",
+    },
   },
   h2: {
     class: {

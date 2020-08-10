@@ -1726,6 +1726,11 @@
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"
 
+"@rnhooks/async-storage@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@rnhooks/async-storage/-/async-storage-0.0.1.tgz#1ab094b92e2ed74cdaf183def581c1f1f573e42c"
+  integrity sha512-Stqn1mhzjg8N3nDE92Hddw9N/HTKe5OhPONeeyL1++qCd2EWhSGneylEiasYTqDcCa+TvtLU9d/7b9I51lEUGg==
+
 "@sinonjs/commons@^1.7.0":
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.1.tgz#e7df00f98a203324f6dc7cc606cad9d4a8ab2217"

@@ -4,25 +4,27 @@ import {FontAwesome5, Feather,EvilIcons,MaterialIcons} from '@expo/vector-icons'
 import Constant from 'expo-constants';
 import { Searchbar } from 'react-native-paper';
 import { CONSTANT } from '../shared/trans';
+import useAsyncStorage from "@rnhooks/async-storage";
 const { width } = Dimensions.get('window')
 const mycolor = "#212121" 
 const strings= CONSTANT.h;
-export default class Header extends React.Component {
-    state={
-        searchtext:"",
-        lang:'en'
-    }
-    componentDidMount(){
-        (async()=>{
-            let value= await AsyncStorage.getItem('lang');
-            value = value || 'en';
-            this.setState({
-                lang:value
-            })
-        })();
-    }
-  render(){
-      lang=this.state.lang;
+export default function Header () {
+    const [lang, setLang, clearLang] = useAsyncStorage("lang");
+    // state={
+    //     searchtext:"",
+    //     lang:'en'
+    // }
+    // componentDidMount(){
+    //     (async()=>{
+    //         let value= await AsyncStorage.getItem('lang');
+    //         value = value || 'en';
+    //         this.setState({
+    //             lang:value
+    //         })
+    //     })();
+    // }
+//   render(){
+    //   lang=this.state.lang;
     return (
         <View style={{
             paddingTop:Constant.statusBarHeight,
@@ -45,8 +47,8 @@ export default class Header extends React.Component {
           }}>
              <Feather name="menu" size={30} color="white" />
              <View>
-                 <Text style={{color:"#fff"}}>{strings.place[lang]}</Text>
-                 <Text style={{color:"#fff"}}>{strings.place2[lang]}</Text>
+                 <Text style={{color:"#fff"}}>{strings.place[lang || 'en']}</Text>
+                 <Text style={{color:"#fff"}}>{strings.place2[lang || 'en']}</Text>
              </View>
              <FontAwesome5 name="user-circle" size={30} color="white" />
           </View>
@@ -60,7 +62,7 @@ export default class Header extends React.Component {
                         backgroundColor: "#fff",
                         paddingHorizontal:15}}
                         autoCapitalize="none"
-                        placeholder={`${strings.search[lang]}`}
+                        placeholder={`${strings.search[lang || 'en']}`}
                         onChangeText={searchtext => this.setState({ searchtext })}
                         value={this.state.searchtext}
                 ></TextInput>
@@ -68,5 +70,5 @@ export default class Header extends React.Component {
              </View>
         </View>
       );
-  }
+//   }
 }
