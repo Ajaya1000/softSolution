@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View,Text } from 'react-native-animatable';
 import {StyleSheet, AsyncStorage} from 'react-native'
 import { CONSTANT } from '../shared/trans';
 const strings= CONSTANT.offer_detail;
 export default function OfferDetails(props) {
   const item=props.route.params.item;
+  
    const [lang, setlang] = useState('en');
    useEffect(() => {
      (async () => {

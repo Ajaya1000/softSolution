@@ -110,6 +110,7 @@ export default class Offers extends React.Component {
     lang:'en'
   }
   componentDidMount() {
+    console.log("component did mount called offers");
     console.log('offer props are');
     console.log(this.props);
     this.init();
@@ -243,6 +244,7 @@ export default class Offers extends React.Component {
       return '#7FFF0011'
   }
   render() {
+    console.log("offers render called");
     const {button_clicked,data,lang}=this.state;
 
     let show_detail;

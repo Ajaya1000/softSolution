@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Image, Alert,Switch } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
@@ -49,6 +49,7 @@ TaskManager.defineTask(NOTIFICATION, async () => {
 });
 const Stack = createStackNavigator();
 class LoginCheck extends React.Component {
+  
   constructor(props) {
     super(props);
 
@@ -178,6 +179,7 @@ class LoginCheck extends React.Component {
 }
 
 const HomeStack = () => {
+    // useEffect
    const [lang, setlang] = useState('en');
    useEffect(() => {
      (async () => {
@@ -297,6 +299,7 @@ const tabBarStyle = {
 };
 
 const HomeTab = () => {
+  console.log("Hometab called");
   const [lang, setlang] = useState('en');
   useEffect(() => {
     (async () => {
@@ -358,14 +361,15 @@ export default class App extends React.Component {
       lang:true
     }
   }
-  toggleLang = () => {
+  toggleLang = async() => {
     console.log('toogleLang is called');
     const isEn= this.state.lang;
-    await AsyncStorage.setItem('lang',isEn?'en':'hi');
+    await AsyncStorage.setItem('lang',isEn?'hi':'en');
     console.log(isEn);
     this.setState({
       lang:!isEn
     })
+    console.log(this.state.lang);
   }
   CustomDrawer = (props) => {
   return (
@@ -446,8 +450,9 @@ export default class App extends React.Component {
 };
 
   render() {
+    console.log("render called");
     return (
-      <NavigationContainer>
+      <NavigationContainer >
         <Drawer.Navigator
           initialRouteName="Home"
           // lang={this.state.lang}
