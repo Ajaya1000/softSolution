@@ -384,7 +384,7 @@ export default function App() {
     await setLang(b ? "hi" : "en");
     console.log("language updated");
     setChecked(!b);
-    Restart();
+    // Restart();
     // console.log(isEn;
     // this.setState({
     //   lang:!isEn
@@ -453,10 +453,11 @@ export default function App() {
           // toggleLang= {this.toggleLang}
           drawerContent={(props) => CustomDrawer(props)}
         >
-          <Drawer.Screen name="Home" component={HomeTab} />
+          {/* <Drawer.Screen name="Home" component={HomeTab} />
           <Drawer.Screen name="LoginSignup" component={LoginSignup} />
           <Drawer.Screen name="Category" component={Category} />
-          <Drawer.Screen name="Offers" component={Offers} />
+          <Drawer.Screen name="Offers" component={Offers} /> */}
+
           {/* <Drawer.Screen name="OfferDetails" component={OfferDetails} /> */}
           {/* <Drawer.Screen name="Basket" component={Basket} /> */}
         </Drawer.Navigator>
