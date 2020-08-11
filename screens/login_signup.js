@@ -56,6 +56,7 @@ componentWillMount(){
   render(){
     
     //   for Login Button
+    let lang= this.state.lang;
         const { toggle } = this.state;
         const textBG = toggle?"#fff":"rgba(52, 52, 52, 0.1)";
         const textcolor= toggle?"#689f39":"#fff";

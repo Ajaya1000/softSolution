@@ -52,9 +52,9 @@ componentWillMount(){
         const textSize = toggle?25:20
     
     //   for Signup Button
-    const textBG2 = toggle?"rgba(52, 52, 52, 0.1)":"#fff";
-    const textcolor2= toggle?"#fff":"#689f39";
-    const textSize2 = toggle?20:25;
+        const textBG2 = toggle?"rgba(52, 52, 52, 0.1)":"#fff";
+        const textcolor2= toggle?"#fff":"#689f39";
+        const textSize2 = toggle?20:25;
 
     // const entryView = toggle?<Text>Login</Text>:<Text>Signup</Text>
     

@@ -34,7 +34,7 @@ export default class Login extends React.Component{
           })();
         }
     loginSubmit = () => {
-      lang= this.state.lang;
+     let lang= this.state.lang;
       this.setState({
         loginText:  <Spinner />,
         disableBttn:true
@@ -119,7 +119,7 @@ export default class Login extends React.Component{
     }
 
     render(){
-      lang= this.state.lang;
+     let lang= this.state.lang;
         return(
             <View>
                 {/* <Text style={{fontSize:20,marginTop:35,textAlign:"center"}}>Hey,User</Text> */}

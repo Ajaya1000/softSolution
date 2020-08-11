@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, TextInput, Text, View, Dimensions } from 'react-native';
 import { Ionicons, FontAwesome5, Feather,EvilIcons,FontAwesome} from '@expo/vector-icons';
 import Constant from 'expo-constants';
@@ -29,22 +29,25 @@ export function Header (props){
 
     // componentDidMount(){
     //     this._checklogin();
-    //      (async () => {
-    //          let value = await AsyncStorage.getItem('lang');
-    //          value = value || 'en';
-    //          this.setState({
-    //              lang: value
-    //          })
-    //      })();
+    //     //  (async () => {
+    //     //      let value = await AsyncStorage.getItem('lang');
+    //     //      value = value || 'en';
+    //     //      this.setState({
+    //     //          lang: value
+    //     //      })
+    //     //  })();
     // }
+    useEffect(()=>{
+        _checklogin();
+    },[])
 
-    // _checklogin = async () =>{
-    //     let test= await AsyncStorage.getItem('username')
-    //     // console.log('test\n\n\n\n\n\n\n\n\n :'+JSON.stringify(test));
-    //     this.setState({
-    //         username:test
-    //     }) 
-    // }
+   const _checklogin = async () =>{
+        let test= await AsyncStorage.getItem('username')
+        // console.log('test\n\n\n\n\n\n\n\n\n :'+JSON.stringify(test));
+        this.setState({
+            username:test
+        }) 
+    }
     const render=()=> {
         // this._checklogin();
         // lang= this.state.lang;

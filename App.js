@@ -365,32 +365,32 @@ const Drawer = createDrawerNavigator();
 export default function App() {
   const [lang, setLang, clearLang] = useAsyncStorage("lang");
   const [checked, setChecked] = useState(true);
-  useEffect(async () => {
-    console.log("useEffect called");
-    console.log("language is", lang);
-    if (!lang) {
-      let v = AsyncStorage.getItem("lang");
-    }
-    if (lang === "hi") {
-      setChecked(false);
-    } else setChecked(true);
+  useEffect(() => {
+    (async()=>{
+          console.log("useEffect called");
+          console.log("language is", lang);
+          let v;
+          if (!lang) {
+            v = await AsyncStorage.getItem("lang");
+          }
+          if (!v) {
+            console.log('before setalng useeffect');
+            await setLang('en');
+            console.log('after setalng useeffect')
+          }
+
+          if (v === "hi") {
+            setChecked(false);
+          } else setChecked(true);
+    })();
   }, []);
   toggleLang = async () => {
-    console.log("toogleLang is called");
-    const b = checked;
-    // console.log(b);
-
-    // console.log(b);
-    await setLang(b ? "hi" : "en");
+    let v = await AsyncStorage.getItem("lang");
+    await setLang(v==='hi' ? "en" : "hi");
     console.log("language updated");
-    setChecked(!b);
-    // Restart();
-    // console.log(isEn;
-    // this.setState({
-    //   lang:!isEn
-    // })
-    // console.log(this.state.lang);
+    // setChecked(!b);
     console.log("language is", lang);
+    Restart();
   };
   const CustomDrawer = (props) => {
     return (
@@ -453,10 +453,10 @@ export default function App() {
           // toggleLang= {this.toggleLang}
           drawerContent={(props) => CustomDrawer(props)}
         >
-          {/* <Drawer.Screen name="Home" component={HomeTab} />
+          <Drawer.Screen name="Home" component={HomeTab} />
           <Drawer.Screen name="LoginSignup" component={LoginSignup} />
           <Drawer.Screen name="Category" component={Category} />
-          <Drawer.Screen name="Offers" component={Offers} /> */}
+          <Drawer.Screen name="Offers" component={Offers} />
 
           {/* <Drawer.Screen name="OfferDetails" component={OfferDetails} /> */}
           {/* <Drawer.Screen name="Basket" component={Basket} /> */}
