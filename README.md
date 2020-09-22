@@ -1,4 +1,4 @@
-# SoftSolutions_InternShip - 1
+# SoftSolutions
 
 ## Knekisan app
 
